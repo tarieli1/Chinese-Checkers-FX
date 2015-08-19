@@ -5,6 +5,8 @@
  */
 package chinesecheckersfx;
 
+import chinesecheckersfx.engine.Model.Engine;
+import chinesecheckersfx.scenes.GameSettings.GameSettingsController;
 import chinesecheckersfx.scenes.MainMenu.MainMenuController;
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class ChineseCheckersFX extends Application {
     private final String MENU_SCENE_FXML_PATH = "scenes/MainMenu/MainMenu.fxml";
     private final String SETTINGS_SCENE_FXML_PATH = "scenes/GameSettings/GameSettings.fxml";
+    private final String GAME_SCENE_FXML_PATH = "scenes/Game/Game.fxml";
     
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -72,7 +75,9 @@ public class ChineseCheckersFX extends Application {
         menuController.getIsNewGame().addListener((source, oldValue, newValue) -> {
             if (newValue) {
                 try {
-                    changeScene(primaryStage,SETTINGS_SCENE_FXML_PATH);
+                    FXMLLoader settingsLoader = changeScene(primaryStage,SETTINGS_SCENE_FXML_PATH);
+                    GameSettingsController gameSettingsCtrl = settingsLoader.getController();
+                    setStartGameListner(gameSettingsCtrl,primaryStage);
                 } catch (IOException ex) {
                     Logger.getLogger(ChineseCheckersFX.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -105,7 +110,7 @@ public class ChineseCheckersFX extends Application {
         });
     }
 
-    private void changeScene(Stage primaryStage, String SETTINGS_SCENE_FXML_PATH) throws IOException {
+    private FXMLLoader changeScene(Stage primaryStage, String SETTINGS_SCENE_FXML_PATH) throws IOException {
         FXMLLoader fxmlLoader = getFXMLLoader(SETTINGS_SCENE_FXML_PATH);
         Parent sceneRoot = getSceneRoot(fxmlLoader);
         
@@ -113,6 +118,21 @@ public class ChineseCheckersFX extends Application {
         
         primaryStage.setScene(scene);
         primaryStage.show();
+        return fxmlLoader;
+    }
+
+    private void setStartGameListner(GameSettingsController gameSettingsCtrl, Stage primaryStage) {
+        gameSettingsCtrl.getFinishedSettings().addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                try {
+                    Engine.Settings gameSettings = gameSettingsCtrl.getGameSettings();
+                    FXMLLoader gameLoader = changeScene(primaryStage,GAME_SCENE_FXML_PATH);
+                } catch (IOException ex) {
+                    Logger.getLogger(ChineseCheckersFX.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("start");
+            }
+        });
     }
     
 }
