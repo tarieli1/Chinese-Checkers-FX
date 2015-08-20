@@ -6,6 +6,8 @@
 package chinesecheckersfx.scenes.GameSettings;
 
 import chinesecheckersfx.engine.Model.Engine;
+import chinesecheckersfx.scenes.ControlledScreen;
+import chinesecheckersfx.scenes.ScreensController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -19,7 +21,9 @@ import javafx.fxml.Initializable;
  *
  * @author shahar2
  */
-public class GameSettingsController implements Initializable {
+public class GameSettingsController implements Initializable ,ControlledScreen {
+   
+    ScreensController myController;
     Engine.Settings gameSettings;
     private SimpleBooleanProperty finishedSettings;
 
@@ -53,5 +57,11 @@ public class GameSettingsController implements Initializable {
         gameSettings.setPlayerNames(names);
         finishedSettings = new SimpleBooleanProperty(false);
     }    
+
+    @Override
+    public void setScreenParent(ScreensController screenParent) {
+        myController = screenParent;
+    }
+    
     
 }

@@ -5,6 +5,8 @@
  */
 package chinesecheckersfx.scenes.MainMenu;
 
+import chinesecheckersfx.scenes.ControlledScreen;
+import chinesecheckersfx.scenes.ScreensController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -13,8 +15,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 
-public class MainMenuController implements Initializable {
-        
+public class MainMenuController implements Initializable ,ControlledScreen {
+   
+    ScreensController myController;
     private SimpleBooleanProperty isNewGame;
     private SimpleBooleanProperty isLoadGame;
     
@@ -43,5 +46,10 @@ public class MainMenuController implements Initializable {
 
     public SimpleBooleanProperty getIsLoadGame() {
         return isLoadGame;
+    }
+
+    @Override
+    public void setScreenParent(ScreensController screenParent) {
+        myController = screenParent;
     }
 }

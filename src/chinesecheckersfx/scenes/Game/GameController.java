@@ -5,6 +5,8 @@
  */
 package chinesecheckersfx.scenes.Game;
 
+import chinesecheckersfx.scenes.ControlledScreen;
+import chinesecheckersfx.scenes.ScreensController;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
@@ -14,8 +16,9 @@ import javafx.fxml.Initializable;
  *
  * @author shahar2
  */
-public class GameController implements Initializable {
-
+public class GameController implements Initializable ,ControlledScreen {
+   
+    ScreensController myController;
     /**
      * Initializes the controller class.
      */
@@ -23,5 +26,10 @@ public class GameController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @Override
+    public void setScreenParent(ScreensController screenParent) {
+        myController = screenParent;
+    }
     
 }
