@@ -66,12 +66,12 @@ import javafx.stage.Stage;
          setOpacity(0.0); 
          getChildren().add(screens.get(name)); 
          KeyFrame firstFadeInKF = new KeyFrame(javafx.util.Duration.ZERO, new KeyValue(opacity, 0.0));
-         KeyFrame secondFadeInKF = new KeyFrame(new javafx.util.Duration(2500), new KeyValue(opacity, 1.0));
+         KeyFrame secondFadeInKF = new KeyFrame(new javafx.util.Duration(1500), new KeyValue(opacity, 1.0));
          Timeline fadeIn = new Timeline(firstFadeInKF,secondFadeInKF);
          fadeIn.play(); 
        } 
-       primaryStage.setHeight(800);
-       primaryStage.setWidth(800);
+       primaryStage.setHeight(720);
+       primaryStage.setWidth(790);
        return true; 
      } 
     else //Load First 
@@ -84,7 +84,7 @@ import javafx.stage.Stage;
         //add new screen
         getChildren().add(0, screens.get(name));
         KeyFrame firstKF = new KeyFrame(javafx.util.Duration.ZERO, new KeyValue(opacity, 0.0));
-        KeyFrame secondKF = new KeyFrame(new javafx.util.Duration(800), new KeyValue(opacity, 1.0));
+        KeyFrame secondKF = new KeyFrame(new javafx.util.Duration(500), new KeyValue(opacity, 1.0));
         
         Timeline fadeIn = new Timeline(firstKF,secondKF);
         fadeIn.play();

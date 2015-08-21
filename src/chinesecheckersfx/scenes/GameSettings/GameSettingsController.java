@@ -17,6 +17,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -28,7 +32,27 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     ScreensController myController;
     Engine.Settings gameSettings;
     private SimpleBooleanProperty finishedSettings;
+    @FXML private TextField user1;
+    @FXML private TextField user2;
+    @FXML private TextField user3;
+    @FXML private TextField user4;
+    @FXML private TextField user5;
+    @FXML private TextField user6;
+    @FXML private CheckBox isHuman2;
+    @FXML private CheckBox isHuman3;
+    @FXML private CheckBox isHuman4;
+    @FXML private CheckBox isHuman5;
+    @FXML private CheckBox isHuman6;
+    @FXML private CheckBox active3;
+    @FXML private CheckBox active4;
+    @FXML private CheckBox active5;
+    @FXML private CheckBox active6;
 
+    @FXML
+    protected void handleActiveAction(ActionEvent event){
+        user3.setDisable(false);
+    }
+    
     @FXML
     protected void handleStartAction(ActionEvent event){
        finishedSettings.set(true);

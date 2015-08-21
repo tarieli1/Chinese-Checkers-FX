@@ -2,25 +2,7 @@
 
 .mainFxmlClass {
     -fx-background-image: url("background.jpg");
-}
-
-.textField {
-    -fx-font-size: 12px;
-    -fx-background-color: seashell;
-    -fx-background-radius: 4px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333333;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
-}
-
-#actiontarget {
-  -fx-fill: FIREBRICK;
-  -fx-font-weight: bold;
-  -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );  
-}
-
-.text{
-    -fx-font-size: 20px;
+    -fx-image: url("9180.jpg");
 }
 
 .header {

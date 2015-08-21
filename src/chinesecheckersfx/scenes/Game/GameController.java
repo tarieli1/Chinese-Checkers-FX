@@ -54,7 +54,7 @@ public class GameController implements Initializable ,ControlledScreen {
             if (newValue) {
                 gameEngine = new Engine(settingsController.getGameSettings());
                 initGameComponents();
-                myController.setScreen(GAME_SCREEN,500,500);
+                myController.setScreen(GAME_SCREEN, 500, 500);
             }
         });
     }    
@@ -71,16 +71,18 @@ public class GameController implements Initializable ,ControlledScreen {
 
         for (int i = 0; i < Board.ROWS; i++) {
             for (int j = 0; j < Board.COLS; j++) {
-                Point curPoint = new Point(i,j);
+                Point curPoint = new Point(i, j);
                 Color buttonColor = gameBoard.getColorByPoint(curPoint);
-                addButtonToPane(curPoint,buttonColor);
+                if(buttonColor != Color.TRANSPARENT)
+                    addButtonToPane(curPoint, buttonColor);
             }
         }
     }
 
     private void addButtonToPane(Point curPoint, Color buttonColor) {
         final int index = curPoint.x * Board.ROWS + curPoint.y;
-        final Button button = new Button("Button " + index);
+        final Button button = new Button();
+        button.setId("Button " + index);
         button.setOnAction((ActionEvent event) -> {
             System.out.println("I was clicked");
             
