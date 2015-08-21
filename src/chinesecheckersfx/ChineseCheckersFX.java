@@ -9,11 +9,9 @@ import chinesecheckersfx.scenes.GameSettings.GameSettingsController;
 import chinesecheckersfx.scenes.MainMenu.MainMenuController;
 import chinesecheckersfx.scenes.ScreensController;
 import java.io.File;
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javax.swing.JFileChooser;
@@ -31,16 +29,16 @@ public class ChineseCheckersFX extends Application {
     public static final String GAME_SETTINGS_SCREEN = "GameSettings"; 
     public static final String GAME_SETTINGS_SCREEN_FXML = "GameSettings/GameSettings.fxml";
     
-    ScreensController mainContainer = new ScreensController();
+    ScreensController mainContainer;
            
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+       mainContainer = new ScreensController(primaryStage);
        mainContainer.loadScreen(MAIN_SCREEN, MAIN_SCREEN_FXML); 
-       mainContainer.loadScreen(GAME_SCREEN, GAME_SCREEN_FXML); 
        mainContainer.loadScreen(GAME_SETTINGS_SCREEN,GAME_SETTINGS_SCREEN_FXML); 
+       mainContainer.loadScreen(GAME_SCREEN, GAME_SCREEN_FXML); 
 
-       mainContainer.setScreen(MAIN_SCREEN); 
+       mainContainer.setScreen(MAIN_SCREEN,500,500); 
        initMainScreen(mainContainer.getFXMLLoader(MAIN_SCREEN));
        
        Group root = new Group(); 
@@ -61,22 +59,9 @@ public class ChineseCheckersFX extends Application {
     private MainMenuController initMainScreen(FXMLLoader fxmlLoader) {
         
         MainMenuController menuController = (MainMenuController) fxmlLoader.getController();       
-        setNewGameListner(menuController);              
         setLoadGameListner(menuController);
         
         return menuController;
-    }
-
-    private void setNewGameListner(MainMenuController menuController) {
-        menuController.getIsNewGame().addListener((source, oldValue, newValue) -> {
-            if (newValue) {
-                mainContainer.setScreen(GAME_SETTINGS_SCREEN);
-                FXMLLoader settingsFxml = mainContainer.getFXMLLoader(GAME_SETTINGS_SCREEN);
-                GameSettingsController gameSettingsCtrl = settingsFxml.getController();
-                setStartGameListner(gameSettingsCtrl);
-                System.out.println("new");
-            }
-        });
     }
 
     private void setLoadGameListner(MainMenuController menuController) {
@@ -104,14 +89,6 @@ public class ChineseCheckersFX extends Application {
         fc.setFileFilter(xmlfilter); //adds the .xml option
         fc.setAcceptAllFileFilterUsed(false);//disables ALL FILES option
         return fc;
-    }
-
-    private void setStartGameListner(GameSettingsController gameSettingsCtrl) {
-        gameSettingsCtrl.getFinishedSettings().addListener((source, oldValue, newValue) -> {
-            if (newValue) {
-                mainContainer.setScreen(GAME_SCREEN);
-            }
-        });
     }
 
     private void loadSavedGame(File savedGame) {

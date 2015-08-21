@@ -27,7 +27,7 @@ public class Board {
     private Cell[][] createFullBoard() {
         Cell[][] fullBoard = null;
         try {
-            ArrayList<String> boardLines = FileManager.readLinesFromFile("src/Resources/boardTemplate.txt");
+            ArrayList<String> boardLines = FileManager.readLinesFromFile("src/chinesecheckersfx/resources/boardTemplate.txt");
             fullBoard = createBoardFromLines(boardLines);
         } catch (Exception e) {
             System.out.println(e.getMessage());

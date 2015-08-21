@@ -23,13 +23,11 @@ public class MainMenuController implements Initializable ,ControlledScreen {
     
     @FXML
     private void handleLoadGameAction(ActionEvent event) {
-        System.out.println("You Load me!");
         isLoadGame.set(true);
     }
     
     @FXML
     private void handleNewGameAction(ActionEvent event) {
-        System.out.println("You New me!");
         isNewGame.set(true);
     }
     
@@ -51,5 +49,10 @@ public class MainMenuController implements Initializable ,ControlledScreen {
     @Override
     public void setScreenParent(ScreensController screenParent) {
         myController = screenParent;
+    }
+
+    @Override
+    public void initListners() {
+        //No listners
     }
 }

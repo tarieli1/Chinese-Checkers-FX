@@ -5,8 +5,10 @@
  */
 package chinesecheckersfx.scenes.GameSettings;
 
+import static chinesecheckersfx.ChineseCheckersFX.GAME_SETTINGS_SCREEN;
 import chinesecheckersfx.engine.Model.Engine;
 import chinesecheckersfx.scenes.ControlledScreen;
+import chinesecheckersfx.scenes.MainMenu.MainMenuController;
 import chinesecheckersfx.scenes.ScreensController;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,21 +33,13 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     protected void handleStartAction(ActionEvent event){
        finishedSettings.set(true);
     }
-
-    public Engine.Settings getGameSettings() {
-        return gameSettings;
-    }
-
-    public SimpleBooleanProperty getFinishedSettings() {
-        return finishedSettings;
-    }
-    
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
         gameSettings = new Engine.Settings();
         //TODO Remove HC settings...
         gameSettings.setColorNumber(2);
@@ -53,7 +47,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
         gameSettings.setTotalPlayers(2);
         ArrayList<String> names = new ArrayList<>();
         names.add("Shahar");
-        names.add("Tamit");
+        names.add("Tamir");
         gameSettings.setPlayerNames(names);
         finishedSettings = new SimpleBooleanProperty(false);
     }    
@@ -63,5 +57,26 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
         myController = screenParent;
     }
     
+    public Engine.Settings getGameSettings() {
+        return gameSettings;
+    }
+
+    public SimpleBooleanProperty getFinishedSettings() {
+        return finishedSettings;
+    }
+
+    @Override
+    public void initListners() {
+        MainMenuController controller = myController.getFXMLLoader(chinesecheckersfx.ChineseCheckersFX.MAIN_SCREEN)
+                                                    .getController();
+        setNewGameListner(controller);
+    }
     
+    private void setNewGameListner(MainMenuController menuController) {
+        menuController.getIsNewGame().addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                myController.setScreen(GAME_SETTINGS_SCREEN,500,500);
+            }
+        });
+    }
 }

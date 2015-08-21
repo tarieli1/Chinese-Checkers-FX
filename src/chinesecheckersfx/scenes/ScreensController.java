@@ -17,6 +17,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -26,13 +27,19 @@ import javafx.scene.layout.StackPane;
      
     private final HashMap<String, Node> screens = new HashMap<>(); 
     private final HashMap<String, FXMLLoader> fxmls = new HashMap<>();
+    private final Stage primaryStage;
+    
+    public ScreensController(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
     
     public boolean loadScreen(String name, String resource) {
      try { 
        FXMLLoader myLoader = createFXMLLoader(resource);
        Parent loadScreen = (Parent) myLoader.load(); 
        ControlledScreen myScreenControler = ((ControlledScreen) myLoader.getController());
-       myScreenControler.setScreenParent(this); 
+       myScreenControler.setScreenParent(this);
+       myScreenControler.initListners();
        addScreen(name, loadScreen); 
        addFxmlLoader(name, myLoader);
        return true; 
@@ -42,7 +49,7 @@ import javafx.scene.layout.StackPane;
      } 
    }
     
-    public boolean setScreen(final String name) { 
+    public boolean setScreen(final String name,double width,double heigth) { 
 
      if(screens.get(name) != null) { //screen loaded 
        final DoubleProperty opacity = opacityProperty(); 
@@ -63,6 +70,8 @@ import javafx.scene.layout.StackPane;
          Timeline fadeIn = new Timeline(firstFadeInKF,secondFadeInKF);
          fadeIn.play(); 
        } 
+       primaryStage.setHeight(800);
+       primaryStage.setWidth(800);
        return true; 
      } 
     else //Load First 
@@ -93,6 +102,7 @@ import javafx.scene.layout.StackPane;
     public void addScreen(String name, Node screen) { 
        screens.put(name, screen);  
     } 
+    
     public void addFxmlLoader(String name, FXMLLoader fxmll) { 
        fxmls.put(name, fxmll);  
     } 
