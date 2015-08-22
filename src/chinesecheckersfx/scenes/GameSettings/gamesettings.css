@@ -1,7 +1,7 @@
 
 
 .mainFxmlClass {
-    -fx-background-image: url("background.jpg");
+    -fx-background-image: url("../../resources/images/background.jpg");
 }
 
 .textField {

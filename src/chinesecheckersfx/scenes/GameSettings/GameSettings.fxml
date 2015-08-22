@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
@@ -11,19 +12,19 @@
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" stylesheets="@gamesettings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.GameSettings.GameSettingsController">
    <children>
       <Text layoutX="12.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Game Settings" wrappingWidth="777.0" />
-      <Button layoutX="15.0" layoutY="608.0" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="60.0" prefWidth="760.0" styleClass="startGameBtn" text="Start Game" />
+      <Button layoutX="13.0" layoutY="608.0" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="60.0" prefWidth="760.0" styleClass="startGameBtn" text="Start Game" />
       <CheckBox disable="true" layoutX="482.0" layoutY="96.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="124.0" selected="true" text="Is Human" />
       <CheckBox fx:id="isHuman2" layoutX="482.0" layoutY="152.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="121.0" text="Is Human" />
-      <CheckBox fx:id="isHuman3" layoutX="482.0" layoutY="205.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="122.0" text="Is Human" />
-      <CheckBox fx:id="isHuman4" layoutX="482.0" layoutY="259.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="123.0" text="Is Human" />
-      <CheckBox fx:id="isHuman5" layoutX="482.0" layoutY="313.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="123.0" text="Is Human" />
-      <CheckBox fx:id="isHuman6" layoutX="482.0" layoutY="368.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="122.0" text="Is Human" />
+      <CheckBox fx:id="isHuman3" disable="true" layoutX="482.0" layoutY="205.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="122.0" text="Is Human" />
+      <CheckBox fx:id="isHuman4" disable="true" layoutX="482.0" layoutY="259.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="123.0" text="Is Human" />
+      <CheckBox fx:id="isHuman5" disable="true" layoutX="482.0" layoutY="313.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="123.0" text="Is Human" />
+      <CheckBox fx:id="isHuman6" disable="true" layoutX="482.0" layoutY="368.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="122.0" text="Is Human" />
       <CheckBox fx:id="active3" layoutX="607.0" layoutY="206.0" mnemonicParsing="false" onAction="#handleActiveAction" prefHeight="39.0" prefWidth="81.0" text="Active" />
-      <CheckBox fx:id="active4" layoutX="608.0" layoutY="257.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="81.0" text="Active" />
-      <CheckBox fx:id="active5" layoutX="609.0" layoutY="312.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="81.0" text="Active" />
-      <CheckBox fx:id="active6" layoutX="609.0" layoutY="368.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="84.0" text="Active" />
+      <CheckBox fx:id="active4" layoutX="608.0" layoutY="257.0" mnemonicParsing="false" onAction="#handleActiveAction" prefHeight="39.0" prefWidth="81.0" text="Active" />
+      <CheckBox fx:id="active5" layoutX="609.0" layoutY="312.0" mnemonicParsing="false" onAction="#handleActiveAction" prefHeight="39.0" prefWidth="81.0" text="Active" />
+      <CheckBox fx:id="active6" layoutX="609.0" layoutY="368.0" mnemonicParsing="false" onAction="#handleActiveAction" prefHeight="39.0" prefWidth="84.0" text="Active" />
       <Text layoutX="61.0" layoutY="485.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="text" text="How Many Colors For Each: " wrappingWidth="328.61297607421875" />
-      <ComboBox layoutX="358.0" layoutY="460.0" prefHeight="35.0" prefWidth="197.0" promptText="Pick a Number" />
+      <ComboBox fx:id="colorNumber" layoutX="358.0" layoutY="460.0" onAction="#handleColorNumberAction" prefHeight="35.0" prefWidth="197.0" promptText="Pick a Number" visibleRowCount="3" />
       <TextField fx:id="user1" layoutX="14.0" layoutY="96.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 1" />
       <TextField fx:id="user2" layoutX="15.0" layoutY="152.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 2" />
       <TextField fx:id="user3" disable="true" layoutX="15.0" layoutY="205.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 3" />

@@ -19,7 +19,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
- * @author shahar2
+ * @author shahar2press ztrl f
+
  */
 public class ChineseCheckersFX extends Application {
     public static final String MAIN_SCREEN = "MainMenu"; 

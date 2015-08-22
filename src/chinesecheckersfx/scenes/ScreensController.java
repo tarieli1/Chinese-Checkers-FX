@@ -5,6 +5,7 @@
  */
 package chinesecheckersfx.scenes;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import javafx.animation.KeyFrame;
@@ -33,8 +34,8 @@ import javafx.stage.Stage;
         this.primaryStage = primaryStage;
     }
     
-    public boolean loadScreen(String name, String resource) {
-     try { 
+    public boolean loadScreen(String name, String resource) throws IOException {
+     //try { 
        FXMLLoader myLoader = createFXMLLoader(resource);
        Parent loadScreen = (Parent) myLoader.load(); 
        ControlledScreen myScreenControler = ((ControlledScreen) myLoader.getController());
@@ -43,10 +44,10 @@ import javafx.stage.Stage;
        addScreen(name, loadScreen); 
        addFxmlLoader(name, myLoader);
        return true; 
-     }catch(Exception e) { 
+    /*}catch(Exception e) { 
        System.out.println(e.getMessage()); 
        return false; 
-     } 
+     }*/ //TODO re Added the catch at end
    }
     
     public boolean setScreen(final String name,double width,double heigth) { 
@@ -71,7 +72,7 @@ import javafx.stage.Stage;
          fadeIn.play(); 
        } 
        primaryStage.setHeight(720);
-       primaryStage.setWidth(790);
+       primaryStage.setWidth(784);
        return true; 
      } 
     else //Load First 

@@ -6,7 +6,6 @@
 package chinesecheckersfx.scenes.Game;
 
 import static chinesecheckersfx.ChineseCheckersFX.GAME_SCREEN;
-import static chinesecheckersfx.ChineseCheckersFX.GAME_SETTINGS_SCREEN;
 import chinesecheckersfx.engine.Model.Board;
 import chinesecheckersfx.engine.Model.Color;
 import chinesecheckersfx.engine.Model.Engine;
@@ -17,11 +16,9 @@ import java.awt.Point;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
@@ -32,11 +29,12 @@ import javafx.scene.layout.GridPane;
  */
 public class GameController implements Initializable ,ControlledScreen {
    
-    ScreensController myController;
-    Engine gameEngine;
-    
-    @FXML
-    GridPane boardPane;
+    private ScreensController myController;
+    private Engine gameEngine;
+    @FXML Button[][] buttonBoard = new Button[Board.ROWS][Board.COLS];
+    @FXML GridPane boardPane;
+    @FXML Button quitBtn;
+    @FXML Button saveBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -68,28 +66,37 @@ public class GameController implements Initializable ,ControlledScreen {
 
     private void initGameComponents() {
         Board gameBoard = gameEngine.getGameBoard();
-
+       
         for (int i = 0; i < Board.ROWS; i++) {
             for (int j = 0; j < Board.COLS; j++) {
                 Point curPoint = new Point(i, j);
                 Color buttonColor = gameBoard.getColorByPoint(curPoint);
-                if(buttonColor != Color.TRANSPARENT)
+                if(buttonColor != Color.TRANSPARENT){
                     addButtonToPane(curPoint, buttonColor);
+                }
             }
         }
     }
 
     private void addButtonToPane(Point curPoint, Color buttonColor) {
-        final int index = curPoint.x * Board.ROWS + curPoint.y;
-        final Button button = new Button();
-        button.setId("Button " + index);
-        button.setOnAction((ActionEvent event) -> {
-            System.out.println("I was clicked");
+        buttonBoard[curPoint.x][curPoint.y] = new Button();
+        setButton(curPoint, buttonColor);
+        buttonBoard[curPoint.x][curPoint.y].setOnAction((ActionEvent event) -> {
+            onMarblePicked(event.getSource());
             
         });
-        boardPane.add(button, curPoint.x, curPoint.y);
+        boardPane.add(buttonBoard[curPoint.x][curPoint.y], curPoint.y + 10, curPoint.x + 100);
     }
-    
 
-    
+    private void setButton(Point curPoint, Color buttonColor) {
+        buttonBoard[curPoint.x][curPoint.y].setDisable(true);
+        if(buttonColor != Color.EMPTY)
+            buttonBoard[curPoint.x][curPoint.y].setStyle("-fx-base:" + buttonColor);
+        buttonBoard[curPoint.x][curPoint.y].setId(buttonColor.toString());
+    }
+
+    private void onMarblePicked(Object source) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+       
 }

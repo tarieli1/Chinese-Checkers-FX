@@ -9,8 +9,8 @@
 
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.MainMenu.MainMenuController">
     <children>
-        <Button layoutX="10.0" layoutY="616.0" onAction="#handleLoadGameAction" prefHeight="56.0" prefWidth="771.0" text="Load Game" />
-      <Button layoutX="10.0" layoutY="525.0" onAction="#handleNewGameAction" prefHeight="62.0" prefWidth="771.0" text="New Game" />
+        <Button layoutX="8.0" layoutY="616.0" onAction="#handleLoadGameAction" prefHeight="56.0" prefWidth="771.0" text="Load Game" />
+      <Button layoutX="8.0" layoutY="525.0" onAction="#handleNewGameAction" prefHeight="62.0" prefWidth="771.0" text="New Game" />
       <Text layoutX="9.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Chinese Checkers" textAlignment="CENTER" wrappingWidth="782.0" />
     </children>
 </AnchorPane>

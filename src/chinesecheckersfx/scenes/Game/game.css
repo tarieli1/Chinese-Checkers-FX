@@ -3,5 +3,36 @@
  */
 
 .mainFxmlClass {
-    -fx-background-image: url("background.jpg");
+    -fx-background-image: url("../../resources/images/background.jpg");
+}
+
+.button{
+    -fx-background-radius: 100em;
+    -fx-min-width: 30px;
+    -fx-max-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+    -fx-border-radius: 100em;
+    -fx-border-color: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);
+}
+
+#saveBtn, #quitBtn{
+    -fx-min-width: 60px;
+    -fx-max-width: 60px;
+    -fx-border-color: black;
+    -fx-text-fill: white;
+    -fx-font-size:15px;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bolder;
+    -fx-background-color: linear-gradient(#61a2b1, #2A5058);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+#saveBtn:hover, #quitBtn:hover {
+    -fx-background-color: linear-gradient(#2A5058, #61a2b1);
+}
+
+.button:hover{
+    -fx-background-color: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4));
 }
