@@ -1,11 +1,5 @@
 package chinesecheckersfx.engine.Model;
 
-import static chinesecheckersfx.engine.Model.Color.BLACK;
-import static chinesecheckersfx.engine.Model.Color.BLUE;
-import static chinesecheckersfx.engine.Model.Color.GREEN;
-import static chinesecheckersfx.engine.Model.Color.RED;
-import static chinesecheckersfx.engine.Model.Color.WHITE;
-import static chinesecheckersfx.engine.Model.Color.YELLOW;
 import chinesecheckersfx.engine.Model.Player.Type;
 import generated.Cell;
 import generated.ChineseCheckers;

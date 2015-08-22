@@ -5,17 +5,13 @@
  */
 package chinesecheckersfx;
 
-import chinesecheckersfx.scenes.GameSettings.GameSettingsController;
 import chinesecheckersfx.scenes.MainMenu.MainMenuController;
 import chinesecheckersfx.scenes.ScreensController;
-import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -60,40 +56,7 @@ public class ChineseCheckersFX extends Application {
     private MainMenuController initMainScreen(FXMLLoader fxmlLoader) {
         
         MainMenuController menuController = (MainMenuController) fxmlLoader.getController();       
-        setLoadGameListner(menuController);
         
         return menuController;
     }
-
-    private void setLoadGameListner(MainMenuController menuController) {
-        menuController.getIsLoadGame().addListener((source, oldValue, newValue) -> {
-            if (newValue) {
-                JFileChooser fc = createXML_FC();
-                
-                //In response to a button click:
-                int returnVal = fc.showOpenDialog(fc);
-                if (returnVal == JFileChooser.APPROVE_OPTION) 
-                    loadSavedGame(fc.getSelectedFile());
-                
-                //Enables Load Game button.
-                menuController.getIsLoadGame().set(false);
-                    
-            }
-        });
-    }
-
-    private JFileChooser createXML_FC() {
-        //Create a file chooser
-        final JFileChooser fc = new JFileChooser();
-        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter
-                        ("xml files (*.xml)", "xml");
-        fc.setFileFilter(xmlfilter); //adds the .xml option
-        fc.setAcceptAllFileFilterUsed(false);//disables ALL FILES option
-        return fc;
-    }
-
-    private void loadSavedGame(File savedGame) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
 }

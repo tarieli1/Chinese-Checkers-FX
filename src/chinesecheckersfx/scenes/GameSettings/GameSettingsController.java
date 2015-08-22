@@ -30,10 +30,10 @@ import javafx.scene.control.TextField;
  */
 public class GameSettingsController implements Initializable ,ControlledScreen {
    
-    ScreensController myController;
+    ScreensController screensController;
     Engine.Settings gameSettings = new Engine.Settings();
     private SimpleBooleanProperty finishedSettings;
-    @FXML private ArrayList<TextField> playerNames = new ArrayList<>();
+    @FXML private final ArrayList<TextField> playerNames = new ArrayList<>();
     @FXML private ArrayList<CheckBox> humans = new ArrayList<>();
     @FXML private ArrayList<CheckBox> actives = new ArrayList<>();
     @FXML private TextField user1;
@@ -88,7 +88,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
         getAndSetPlayerNames();
         getAndSetHumanPlayers();
         //gameSettings.setColorNumber(Integer.parseInt(colorNumber.getValue().toString()));
-        gameSettings.setColorNumber(2);
+        gameSettings.setColorNumber(1);
         
 
     }
@@ -176,7 +176,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
 
     @Override
     public void setScreenParent(ScreensController screenParent) {
-        myController = screenParent;
+        screensController = screenParent;
     }
     
     public Engine.Settings getGameSettings() {
@@ -189,7 +189,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
 
     @Override
     public void initListners() {
-        MainMenuController controller = myController.getFXMLLoader(chinesecheckersfx.ChineseCheckersFX.MAIN_SCREEN)
+        MainMenuController controller = screensController.getFXMLLoader(chinesecheckersfx.ChineseCheckersFX.MAIN_SCREEN)
                                                     .getController();
         setNewGameListner(controller);
     }
@@ -197,7 +197,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     private void setNewGameListner(MainMenuController menuController) {
         menuController.getIsNewGame().addListener((source, oldValue, newValue) -> {
             if (newValue) {
-                myController.setScreen(GAME_SETTINGS_SCREEN,500,500);
+                screensController.setScreen(GAME_SETTINGS_SCREEN,500,500);
             }
         });
     }
