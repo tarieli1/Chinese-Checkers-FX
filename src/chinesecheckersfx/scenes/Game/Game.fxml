@@ -25,6 +25,7 @@
         </rowConstraints>
       </GridPane>
       <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="660.0" mnemonicParsing="false" text="Quit" />
-      <Button id="saveBtn" fx:id="saveBtn" layoutX="84.0" layoutY="660.0" mnemonicParsing="false" text="Save" />
+      <Button id="saveBtn" fx:id="saveBtn" layoutX="84.0" layoutY="660.0" mnemonicParsing="false" onAction="#onSaveGameClick" text="Save" />
+      <Text fx:id="helperText" layoutX="339.0" layoutY="680.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

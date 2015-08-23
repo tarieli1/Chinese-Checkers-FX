@@ -37,7 +37,7 @@ public class MainMenuController implements Initializable ,ControlledScreen {
     }
     
     @FXML
-    private void handleNewGameAction(ActionEvent event) {
+    private void handleNewGameAction() {
         isNewGame.set(true);
     }
     
