@@ -12,7 +12,7 @@
 <AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" stylesheets="@gamesettings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.GameSettings.GameSettingsController">
    <children>
       <Text layoutX="12.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Game Settings" wrappingWidth="777.0" />
-      <Button layoutX="13.0" layoutY="608.0" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="60.0" prefWidth="760.0" styleClass="startGameBtn" text="Start Game" />
+      <Button fx:id="startGame" layoutX="13.0" layoutY="608.0" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="60.0" prefWidth="760.0" styleClass="startGameBtn" text="Start Game" />
       <CheckBox disable="true" layoutX="482.0" layoutY="96.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="124.0" selected="true" text="Is Human" />
       <CheckBox fx:id="isHuman2" layoutX="482.0" layoutY="152.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="121.0" text="Is Human" />
       <CheckBox fx:id="isHuman3" disable="true" layoutX="482.0" layoutY="205.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="122.0" text="Is Human" />
@@ -31,5 +31,6 @@
       <TextField fx:id="user4" disable="true" layoutX="15.0" layoutY="257.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 4" />
       <TextField fx:id="user5" disable="true" layoutX="15.0" layoutY="312.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 5" />
       <TextField fx:id="user6" disable="true" layoutX="15.0" layoutY="368.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 6" />
+      <Label fx:id="alertLabel" layoutX="17.0" layoutY="541.0" prefHeight="25.0" prefWidth="754.0" />
    </children>
 </AnchorPane>

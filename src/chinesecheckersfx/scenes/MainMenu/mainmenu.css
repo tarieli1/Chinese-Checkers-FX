@@ -2,7 +2,6 @@
 
 .mainFxmlClass {
     -fx-background-image: url("../../resources/images/background.jpg");
-    -fx-image: url("../../resources/images/9180.jpg");
 }
 
 .header {

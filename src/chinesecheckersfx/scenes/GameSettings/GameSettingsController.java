@@ -13,27 +13,26 @@ import chinesecheckersfx.scenes.ScreensController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javax.naming.Binding;
 
-/**
- * FXML Controller class
- *
- * @author shahar2
- */
 public class GameSettingsController implements Initializable ,ControlledScreen {
    
-    ScreensController screensController;
+    ScreensController screenController;
     Engine.Settings gameSettings = new Engine.Settings();
     private SimpleBooleanProperty finishedSettings;
-    @FXML private final ArrayList<TextField> playerNames = new ArrayList<>();
+    @FXML private ArrayList<TextField> playerNames = new ArrayList<>();
     @FXML private ArrayList<CheckBox> humans = new ArrayList<>();
     @FXML private ArrayList<CheckBox> actives = new ArrayList<>();
     @FXML private TextField user1;
@@ -52,7 +51,9 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     @FXML private CheckBox active4;
     @FXML private CheckBox active5;
     @FXML private CheckBox active6;
-    @FXML private final ComboBox colorNumber = new ComboBox();
+    @FXML private ComboBox colorNumber;
+    @FXML private Label alertLabel;
+    @FXML private Button startGame;
 
     @FXML
     protected void handleActiveAction(ActionEvent event){
@@ -84,17 +85,22 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     }
 
     private void initNewGame() {
-        getAndSetTotalPlayers();
+        int totalPlayers = getAndSetTotalPlayers();
         getAndSetPlayerNames();
         getAndSetHumanPlayers();
-        //gameSettings.setColorNumber(Integer.parseInt(colorNumber.getValue().toString()));
-        gameSettings.setColorNumber(1);
+        getAndSetColorNumber(totalPlayers);
+    }
+    
+    @FXML
+    private void getAndSetColorNumber(int totalPlayers) throws NumberFormatException {
+        int colorNumberValue = Integer.parseInt(colorNumber.getValue().toString());
+        gameSettings.setColorNumber((colorNumberValue));
         
-
     }
 
     @FXML
     private void getAndSetPlayerNames() {
+        
         ArrayList<String> names = new ArrayList<>();
         for (TextField name : playerNames)
             if(!name.isDisable())
@@ -113,12 +119,14 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     }
 
     @FXML
-    private void getAndSetTotalPlayers() {
+    private int getAndSetTotalPlayers() {
         int totalPlayers = 2;
         for (CheckBox active : actives)
             if(active.isSelected())
                 totalPlayers++;
         gameSettings.setTotalPlayers(totalPlayers);
+        
+        return totalPlayers;
     }
     
     @FXML
@@ -131,13 +139,98 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        BooleanBinding bb = bindFormValidation();
         setIsActiveCheckBox();
         setIsHumansCheckBox();
         setPlayerNameTextField();
         setColorNumberComboBox();
-       
+        startGame.disableProperty().bind(bb);
         finishedSettings = new SimpleBooleanProperty(false);
-    }    
+    }
+
+    private BooleanBinding bindFormValidation() {
+        BooleanBinding bb = new BooleanBinding() {
+            {
+                super.bind(user1.textProperty(),
+                        active3.selectedProperty(),
+                        active4.selectedProperty(),
+                        active5.selectedProperty(),
+                        active6.selectedProperty(),
+                        user2.textProperty(),
+                        user4.textProperty(),
+                        user5.textProperty(),
+                        user6.textProperty(),
+                        user3.textProperty());
+            }
+
+            @Override
+            protected boolean computeValue() {
+                boolean isEmpty = isNotEmpty();
+                boolean isUniqe = isUniqueNames();
+                if(!isUniqe)
+                    alertLabel.setText("Names need to be unique..");
+                else if(isEmpty)
+                    alertLabel.setText("Some values are empty.. pay attention");
+                else
+                    alertLabel.setText("");
+                return isEmpty || !isUniqe;
+            }
+        };
+        return bb;
+    }
+    
+    private BooleanBinding bindColorNumberValidation() {
+        BooleanBinding bb = new BooleanBinding() {
+            {
+                super.bind(colorNumber.valueProperty(),
+                        active3.selectedProperty(),
+                        active4.selectedProperty(),
+                        active5.selectedProperty(),
+                        active6.selectedProperty());
+            }
+
+            @Override
+            protected boolean computeValue() {
+                boolean isValid = isValidColorPick();
+                if(!isValid)
+                    alertLabel.setText("Hey, you cant pick more so many colors..");
+                else
+                    alertLabel.setText("");
+                return isValid;
+            }
+
+            private boolean isValidColorPick() {
+                int colorNumPicked = Integer.parseInt(colorNumber.getSelectionModel().getSelectedItem().toString());
+                int totalPlayers = 2;
+                for (CheckBox active : actives) 
+                    if(active.isSelected())
+                        totalPlayers++;
+                return (colorNumPicked * totalPlayers) > 6;
+            }
+        };
+        return bb;
+    }
+    
+    @FXML
+     private boolean isUniqueNames() {
+         for (int i = 0; i < playerNames.size()-1; i++) {
+             for (int j = i+1; j < playerNames.size(); j++) {
+                 if(!playerNames.get(i).isDisabled() && !playerNames.get(j).isDisabled())
+                 if(playerNames.get(i).getText().equals(playerNames.get(j).getText()))
+                     return false;
+             }
+        }
+         return true;
+    }
+
+    private boolean isNotEmpty() {
+        return (user1.getText().isEmpty())
+                || (user2.getText().isEmpty())
+                || (user4.getText().isEmpty() && active4.isSelected())
+                || (user5.getText().isEmpty() && active5.isSelected())
+                || (user6.getText().isEmpty() && active6.isSelected())
+                || (user3.getText().isEmpty() && active3.isSelected());
+    }
 
     private void setIsActiveCheckBox() {
         actives.add(active3);
@@ -163,20 +256,13 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
         playerNames.add(user6);
     }
     
-    @FXML
     private void setColorNumberComboBox() {
-        ArrayList<Integer> Items = new ArrayList();
-        Items.add(1);
-        Items.add(2);
-        Items.add(3);
-        ObservableList obList = FXCollections.observableList(Items);
-        colorNumber.getItems().clear();
-        colorNumber.setItems(obList);
+        colorNumber.setItems(FXCollections.observableArrayList(1, 2, 3));
     }    
 
     @Override
     public void setScreenParent(ScreensController screenParent) {
-        screensController = screenParent;
+        screenController = screenParent;
     }
     
     public Engine.Settings getGameSettings() {
@@ -189,7 +275,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
 
     @Override
     public void initListners() {
-        MainMenuController controller = screensController.getFXMLLoader(chinesecheckersfx.ChineseCheckersFX.MAIN_SCREEN)
+        MainMenuController controller = screenController.getFXMLLoader(chinesecheckersfx.ChineseCheckersFX.MAIN_SCREEN)
                                                     .getController();
         setNewGameListner(controller);
     }
@@ -197,7 +283,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     private void setNewGameListner(MainMenuController menuController) {
         menuController.getIsNewGame().addListener((source, oldValue, newValue) -> {
             if (newValue) {
-                screensController.setScreen(GAME_SETTINGS_SCREEN,500,500);
+                screenController.setScreen(GAME_SETTINGS_SCREEN,500,500);
             }
         });
     }

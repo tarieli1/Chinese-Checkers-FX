@@ -59,7 +59,7 @@ import javafx.stage.Stage;
        if(!getChildren().isEmpty()){ 
          EventHandler handler = (EventHandler) (Event event) -> removeDisplayedScreen(name, opacity);
          KeyFrame firstKF = new KeyFrame(javafx.util.Duration.ZERO, new KeyValue(opacity, 1.0));
-         KeyFrame secondKF = new KeyFrame(new javafx.util.Duration(1000), handler, new KeyValue(opacity, 0.0));    
+         KeyFrame secondKF = new KeyFrame(new javafx.util.Duration(800), handler, new KeyValue(opacity, 0.0));    
          Timeline fade = new Timeline(firstKF,secondKF); 
          fade.play(); 
        } else { 
@@ -67,7 +67,7 @@ import javafx.stage.Stage;
          setOpacity(0.0); 
          getChildren().add(screens.get(name)); 
          KeyFrame firstFadeInKF = new KeyFrame(javafx.util.Duration.ZERO, new KeyValue(opacity, 0.0));
-         KeyFrame secondFadeInKF = new KeyFrame(new javafx.util.Duration(1500), new KeyValue(opacity, 1.0));
+         KeyFrame secondFadeInKF = new KeyFrame(new javafx.util.Duration(1300), new KeyValue(opacity, 1.0));
          Timeline fadeIn = new Timeline(firstFadeInKF,secondFadeInKF);
          fadeIn.play(); 
        } 
