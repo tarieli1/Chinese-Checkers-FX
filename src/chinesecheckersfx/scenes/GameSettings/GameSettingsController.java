@@ -160,55 +160,41 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
                         user4.textProperty(),
                         user5.textProperty(),
                         user6.textProperty(),
-                        user3.textProperty());
+                        user3.textProperty(),
+                        colorNumber.valueProperty());
             }
 
             @Override
             protected boolean computeValue() {
                 boolean isEmpty = isNotEmpty();
                 boolean isUniqe = isUniqueNames();
-                if(!isUniqe)
+                boolean isValid = isValidColorPick();
+                if(!isValid)
+                    alertLabel.setText("Hey, you cant pick more so many colors..");
+                else if(!isUniqe)
                     alertLabel.setText("Names need to be unique..");
                 else if(isEmpty)
                     alertLabel.setText("Some values are empty.. pay attention");
                 else
                     alertLabel.setText("");
-                return isEmpty || !isUniqe;
+                return isEmpty || !isUniqe || !isValid;
             }
         };
         return bb;
     }
-    
-    private BooleanBinding bindColorNumberValidation() {
-        BooleanBinding bb = new BooleanBinding() {
-            {
-                super.bind(colorNumber.valueProperty(),
-                        active3.selectedProperty(),
-                        active4.selectedProperty(),
-                        active5.selectedProperty(),
-                        active6.selectedProperty());
-            }
 
-            @Override
-            protected boolean computeValue() {
-                boolean isValid = isValidColorPick();
-                if(!isValid)
-                    alertLabel.setText("Hey, you cant pick more so many colors..");
-                else
-                    alertLabel.setText("");
-                return isValid;
-            }
-
-            private boolean isValidColorPick() {
-                int colorNumPicked = Integer.parseInt(colorNumber.getSelectionModel().getSelectedItem().toString());
-                int totalPlayers = 2;
-                for (CheckBox active : actives) 
-                    if(active.isSelected())
-                        totalPlayers++;
-                return (colorNumPicked * totalPlayers) > 6;
-            }
-        };
-        return bb;
+    @FXML
+    private boolean isValidColorPick() {
+        int colorNumPicked = 0;
+        if (colorNumber.getSelectionModel().getSelectedItem() != null)
+            colorNumPicked = Integer.parseInt(colorNumber.getSelectionModel().getSelectedItem().toString());
+        else
+            return false;
+        int totalPlayers = 2;
+        for (CheckBox active : actives) 
+            if(active.isSelected())
+                totalPlayers++;
+        return (colorNumPicked * totalPlayers) <= 6;
     }
     
     @FXML
