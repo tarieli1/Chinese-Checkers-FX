@@ -21,7 +21,10 @@ import java.awt.Point;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.Set;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +33,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.util.Pair;
 
 /**
  * FXML Controller class
@@ -45,9 +49,17 @@ public class GameController implements Initializable ,ControlledScreen {
     @FXML Button quitBtn;
     @FXML Button saveBtn;
     @FXML Text helperText;
+    private Point start;
+    private SimpleBooleanProperty isGameOver;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        isGameOver = new SimpleBooleanProperty(false);
+        isGameOver.addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                doGameOver();
+            }
+        });
     }    
     
     @Override
@@ -85,6 +97,7 @@ public class GameController implements Initializable ,ControlledScreen {
     private void setLoadGameListner(MainMenuController mainMenuController) {
         mainMenuController.getIsLoadGameFinished().addListener((source, oldValue, newValue) -> {
             if (newValue) {
+                
                 gameEngine = mainMenuController.getLoadedGame();
                 startGame();
             }
@@ -100,7 +113,7 @@ public class GameController implements Initializable ,ControlledScreen {
 
     private void initGameComponents() {
         Board gameBoard = gameEngine.getGameBoard();
-       
+        
         for (int i = 0; i < Board.ROWS; i++) {
             for (int j = 0; j < Board.COLS; j++) {
                 Point curPoint = new Point(i, j);
@@ -126,13 +139,32 @@ public class GameController implements Initializable ,ControlledScreen {
         buttonBoard[curPoint.x][curPoint.y].setDisable(true);
         if(buttonColor != Color.EMPTY)
             buttonBoard[curPoint.x][curPoint.y].setStyle("-fx-base:" + buttonColor);
+        else
+            buttonBoard[curPoint.x][curPoint.y].setStyle(null);
         buttonBoard[curPoint.x][curPoint.y].setId(buttonColor.toString());
     }
 
     private void onMarblePicked(Object source) {
-        //disableAllPoints();
-        //enablePoints(gameEngine.getCurrentPlayer().getPossibleMoves());
-        System.out.println("click");
+        Button buttonClicked = (Button)source;
+        start = getPointClicked(buttonClicked);
+        enableResetOn(start);
+        Player  curPlayer = gameEngine.getCurrentPlayer();
+        enableMoves(curPlayer.getPossibleMoves().get(start));
+
+    }
+
+    private Point getPointClicked(Button buttonClicked) {
+        Point pointClicked = null;
+        for (int i = 0; i < Board.ROWS; i++) {
+            for (int j = 0; j < Board.COLS; j++) {
+                Button bt = buttonBoard[i][j];
+                if(bt != null && bt != buttonClicked)
+                        bt.disableProperty().set(true);
+                else if(bt != null)
+                    pointClicked = new Point(i,j);
+            }
+        }
+        return pointClicked;
     }
     
     @FXML
@@ -165,16 +197,18 @@ public class GameController implements Initializable ,ControlledScreen {
 
     private void doIteration() {
         Player curPlayer = gameEngine.getCurrentPlayer();
+        initTurnForCurrentPlayer();
         String helpMessage = createTurnStartMessage(curPlayer.getName(),curPlayer.getColors());
         helperText.setText(helpMessage);
-        disableAllPoints();
-        enablePoints(curPlayer.getPoints());
     }
 
     private void enablePoints(ArrayList<Point> points) {       
         for (Point point : points) {
             Button bt = buttonBoard[point.x][point.y];
             bt.disableProperty().set(false);
+            bt.setOnAction((ActionEvent event) -> {
+            onMarblePicked(event.getSource());
+        });
         }
     }
 
@@ -191,5 +225,105 @@ public class GameController implements Initializable ,ControlledScreen {
             for (Button button : buttonBoardRow) 
                 if(button != null)
                     button.disableProperty().set(true);
+    }
+
+    private void initTurnForCurrentPlayer() {
+        start = null;
+        disableAllPoints();
+        enablePoints(filterEmpty(gameEngine.getCurrentPlayer().getPossibleMoves()));
+    }
+
+    private void enableMoves(ArrayList<Point> moves) {
+        for (Point point : moves) {
+            Button bt = buttonBoard[point.x][point.y];
+            bt.disableProperty().set(false);
+            bt.setOnAction((ActionEvent event) -> {
+            onMarbleMoved(event.getSource());
+        });
+        }
+    }
+
+    private void onMarbleMoved(Object source) {
+        Point end = getPointClicked((Button)source);
+        isGameOver.set(gameEngine.doIteration(start, end)); 
+        if(!isGameOver.get())
+            doTurn();
+    }
+
+    private ArrayList<Point> filterEmpty(HashMap<Point, ArrayList<Point>> possibleMoves) {
+        ArrayList<Point> notEmptyKeys = new ArrayList<>();
+        
+        Set<Point> starts = possibleMoves.keySet();
+        for (Point start : starts) {
+            if (!possibleMoves.get(start).isEmpty()) 
+                notEmptyKeys.add(start);
+        }
+        
+        return notEmptyKeys;
+    }
+
+    private void enableResetOn(Point start) {
+        Button bt = buttonBoard[start.x][start.y];
+        bt.setOnAction((ActionEvent event) -> {
+            initTurnForCurrentPlayer();
+        });
+    }
+
+    private void doTurn() {
+        initBoard();
+        Player curPlayer = gameEngine.getCurrentPlayer();
+        Pair<Boolean,ArrayList<Point>> aiMove;
+        if (curPlayer.getType() == Player.Type.PLAYER) 
+            doIteration();
+        else
+            doAiIteration();
+
+        
+    }
+
+    private void doAiIteration() {
+        Pair<Boolean, ArrayList<Point>> aiMove;
+        aiMove = gameEngine.doAiIteration();
+        Point aiStart,aiEnd;
+        if(aiMove.getKey())
+            isGameOver.set(true);
+        else{
+            aiStart = aiMove.getValue().get(0);
+            aiEnd = aiMove.getValue().get(1);
+            doTurn();
+        }
+        //TODO Show the move to the player
+    }
+
+    private void initBoard(){
+     Board gameBoard = gameEngine.getGameBoard();
+        
+     for (int i = 0; i < Board.ROWS; i++) {
+        for (int j = 0; j < Board.COLS; j++) {
+            Point curPoint = new Point(i, j);
+            Color buttonColor = gameBoard.getColorByPoint(curPoint);
+            if(buttonColor != Color.TRANSPARENT){
+                setButton(curPoint, buttonColor);
+            }
+        }
+      }
+    }
+
+    private void doGameOver() {
+        initBoard();
+        disableAllPoints();
+        helperText.setText(gameEngine.getCurrentPlayer().getName() + " Won!, It was a nice game!");
+    }
+    
+    @FXML
+    private void onRestartClick(ActionEvent event){
+        gameEngine.restart();
+        isGameOver.set(false);
+        doTurn();
+    }
+    
+    @FXML
+    private void onQuitClick(ActionEvent event){
+        isGameOver.set(gameEngine.userQuited(gameEngine.getCurrentPlayer()));
     }
 }

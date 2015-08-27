@@ -47,11 +47,13 @@ public abstract class EngineFactory {
         return new Point(p.x - 1, i);
     }
 
-    private static Engine.Settings createGameSettings(ChineseCheckers savedGame) {
+    private static Engine.Settings createGameSettings(ChineseCheckers savedGame) throws Exception {
         Engine.Settings gameSetting = new Engine.Settings();
         List<Players.Player> players = savedGame.getPlayers().getPlayer();
         gameSetting.setTotalPlayers(players.size());
         gameSetting.setPlayerNames(createNamesList(players));
+        gameSetting.setColorNumber(getColorNumberEach(savedGame));
+        gameSetting.setHumanPlayers(getHumanPlayers(savedGame));
 
         return gameSetting;
     }
@@ -214,7 +216,7 @@ public abstract class EngineFactory {
     private static void validateMap(HashMap<Color, AtomicInteger> colorCounterMap) throws Exception {
         for (chinesecheckersfx.engine.Model.Color key : colorCounterMap.keySet()) {
             if (colorCounterMap.get(key).intValue() != 10) {
-                throw new Exception("There is a color with more then 10 points!");
+                throw new Exception("There is a color with less or more then 10 marbles!");
             }
         }
     }
@@ -235,5 +237,38 @@ public abstract class EngineFactory {
 
     private static boolean isMarble(Color color) {
         return color != Color.TRANSPARENT && color != Color.EMPTY;
+    }
+
+    private static int getColorNumberEach(ChineseCheckers savedGame) throws Exception {
+        Integer size = null;
+        Players players = savedGame.getPlayers();
+        List<Players.Player> playerList = players.getPlayer();
+        for (Players.Player player : playerList) {
+            int curPlayerSize = player.getColorDef().size();
+            if (size == null) 
+                size = curPlayerSize;
+            else if(size != curPlayerSize)
+                throw new Exception("There are 2 players with diffrent color size");
+        }
+        return size;
+    }
+
+    private static int getHumanPlayers(ChineseCheckers savedGame) throws Exception {
+        int humanCount = 0;
+        Players players = savedGame.getPlayers();
+        List<Players.Player> playerList = players.getPlayer();
+        for (Players.Player player : playerList) {
+            if (isHuman(player))
+                humanCount++;
+        }
+        if(humanCount == 0)
+            throw new Exception("There are no human players!");
+        return humanCount;
+    }
+
+    private static boolean isHuman(Players.Player player) {
+        if (PlayerType.HUMAN == player.getType()) 
+            return true;
+        return false;
     }
 }

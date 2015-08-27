@@ -24,8 +24,9 @@
           <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="165.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="660.0" mnemonicParsing="false" text="Quit" />
+      <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="660.0" mnemonicParsing="false" onAction="#onQuitClick" text="Quit" />
       <Button id="saveBtn" fx:id="saveBtn" layoutX="84.0" layoutY="660.0" mnemonicParsing="false" onAction="#onSaveGameClick" text="Save" />
       <Text fx:id="helperText" layoutX="339.0" layoutY="680.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Button id="saveBtn" layoutX="155.0" layoutY="660.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onRestartClick" prefHeight="30.0" prefWidth="104.0" text="Restart" />
    </children>
 </AnchorPane>

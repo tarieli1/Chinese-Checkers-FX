@@ -1,0 +1,7 @@
+1)Do something with White marbles.They can't be seen...
+2)Change default "Each Color" to 1 (Instead of "choose how many colors)
+3)Fix buttons on the game controller
+4)Fix heigth and width on each scene(idk how it looks on yours but it's not good on my pc)
+5)Create Save/Load on diffrent Threads
+6)Bind Quit button on Game to isGameOver Boolean
+6)Some QA Please <3

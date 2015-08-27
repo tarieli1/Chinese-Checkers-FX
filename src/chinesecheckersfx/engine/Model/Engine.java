@@ -14,12 +14,13 @@ public class Engine {
     private int currentPlayerIndx;
     private final Stack<Pair<Color, Color>> colorStack = new Stack<>();
     private final TargetMapper targetMap = new TargetMapper();
-
+    private final Engine.Settings gameSettings;
     public TargetMapper getTargetMap() {
         return targetMap;
     }
 
     public Engine(Settings gameSettings) {
+        this.gameSettings = gameSettings;
         init(gameSettings);
     }
 
@@ -126,7 +127,7 @@ public class Engine {
         player.setPossibleMoves(possibleMoves);
     }
 
-    public void restart(Settings gameSettings) {
+    public void restart() {
         init(gameSettings);
     }
 
@@ -362,7 +363,7 @@ public class Engine {
     private ArrayList<Color> toList(Stack<Pair<Color, Color>> colorStack) {
         ArrayList<Color> colorsInStack = new ArrayList<>();
         for (Pair<Color, Color> pair : colorStack) {
-            colorsInStack.add(pair.getKey());
+            colorsInStack.add(pair.getValue());
         }
         return colorsInStack;
     }
@@ -459,7 +460,16 @@ public class Engine {
 
         return emptyTarget;
     }
-
+    
+    private boolean quitCurPlayer(){
+        boolean isGameOver = false;
+        players.remove(this.getCurrentPlayer());
+        if (players.size() == 1) 
+            isGameOver = true;
+        
+        return isGameOver;
+    }
+    
     public static class Settings {
 
         private int totalPlayers;
