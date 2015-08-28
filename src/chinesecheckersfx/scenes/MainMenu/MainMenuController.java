@@ -1,11 +1,10 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package chinesecheckersfx.scenes.MainMenu;
 
-import chinesecheckersfx.ChineseCheckersFX;
 import chinesecheckersfx.engine.Model.Engine;
 import chinesecheckersfx.engine.Model.EngineFactory;
 import chinesecheckersfx.engine.Model.FileManager;
@@ -15,12 +14,12 @@ import generated.ChineseCheckers;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.stage.FileChooser;
 
 
@@ -30,10 +29,14 @@ public class MainMenuController implements Initializable ,ControlledScreen {
     private SimpleBooleanProperty isNewGame;
     private SimpleBooleanProperty isLoadGameFinished;
     private Engine loadedGame; 
+    private FileChooser fc;
+    @FXML Button loadGameButton;
+    @FXML Button newGameButton;
+    private File choosedFile;
     
     @FXML
     private void handleLoadGameAction(ActionEvent event) {
-        loadGame();
+        startLoadGame();
     }
     
     @FXML
@@ -45,7 +48,7 @@ public class MainMenuController implements Initializable ,ControlledScreen {
     public void initialize(URL url, ResourceBundle rb) {
         isNewGame = new SimpleBooleanProperty(false);
         isLoadGameFinished = new SimpleBooleanProperty(false);
-
+        fc = createXML_FC();
     }    
        
     public SimpleBooleanProperty getIsNewGame() {
@@ -62,24 +65,37 @@ public class MainMenuController implements Initializable ,ControlledScreen {
         //No listners
     }
 
-    private void loadGame() {
-     FileChooser fc = createXML_FC();
-                
-                //In response to a button click:
-                
-        File choosedFile = fc.showOpenDialog(null);
-        if(choosedFile != null){
-            try {
-                loadSavedGame(choosedFile);
-                } catch (Exception ex) {
-                    Logger.getLogger(ChineseCheckersFX.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        }
+    private void startLoadGame() {
+        loadGameButton.disableProperty().set(true);
+        newGameButton.disableProperty().set(true);
+        choosedFile = fc.showOpenDialog(screensController.getPrimaryStage());
+        Thread thread = new Thread(this::loadGame);
+        thread.setDaemon(true);
+        thread.start();
+        loadGame();
+    }
+
+    private void loadGame() {                
+        boolean loaded = false;
+
+        
+        if(choosedFile != null)
+            loaded = loadSavedGame(choosedFile);
+
+        if(!loaded)
+            loadFailed();
+    }
+
+    private void loadFailed() {
+        isLoadGameFinished.set(false);
+        loadGameButton.disableProperty().set(false);
+        newGameButton.disableProperty().set(false);
+        
     }
     
     private FileChooser createXML_FC() {
         //Create a file chooser
-        final FileChooser fc = new FileChooser();
+        fc = new FileChooser();
         fc.setTitle("Select the saveGame XML file");
 
         FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("xml files (*.xml)", "*.xml");
@@ -88,10 +104,16 @@ public class MainMenuController implements Initializable ,ControlledScreen {
         return fc;
     }
 
-    private void loadSavedGame(File savedGameXML) throws Exception {
-        ChineseCheckers savedGame = FileManager.loadGame(savedGameXML.getAbsolutePath());
-        loadedGame = EngineFactory.createEngine(savedGame);
-        isLoadGameFinished.set(true);
+    private boolean loadSavedGame(File savedGameXML){
+            boolean isLoaded = true;
+        try {
+            ChineseCheckers savedGame = FileManager.loadGame(savedGameXML.getAbsolutePath());
+            loadedGame = EngineFactory.createEngine(savedGame);
+            Platform.runLater(()->isLoadGameFinished.set(true));
+        } catch (Exception ex) {
+            isLoaded = false;
+        }
+        return isLoaded;
     }
 
     public SimpleBooleanProperty getIsLoadGameFinished() {

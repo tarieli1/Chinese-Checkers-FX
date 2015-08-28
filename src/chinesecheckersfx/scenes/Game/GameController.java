@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -44,17 +45,20 @@ public class GameController implements Initializable ,ControlledScreen {
    
     private ScreensController screensController;
     private Engine gameEngine;
-    @FXML Button[][] buttonBoard = new Button[Board.ROWS][Board.COLS];
+    Button[][] buttonBoard = new Button[Board.ROWS][Board.COLS];
     @FXML GridPane boardPane;
     @FXML Button quitBtn;
     @FXML Button saveBtn;
+    @FXML Button saveAsBtn;
     @FXML Text helperText;
+    private FileChooser fc;
     private Point start;
     private SimpleBooleanProperty isGameOver;
     private File saveFile;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        fc = createXML_FC();
         isGameOver = new SimpleBooleanProperty(false);
         isGameOver.addListener((source, oldValue, newValue) -> {
             if (newValue) {
@@ -168,39 +172,41 @@ public class GameController implements Initializable ,ControlledScreen {
         return pointClicked;
     }
     
-    @FXML
-    private void onSaveGameClick(ActionEvent event){
-        if (saveFile != null) 
-            saveGame(saveFile);
-        else
-            saveAs();
-    }
-    
-    @FXML
-    private void onSaveAsClick(ActionEvent event){
-        saveAs();
-    }
-
     private void saveAs() {
-        FileChooser fc = createXML_FC();
         saveFile = fc.showSaveDialog(null);
         if (saveFile != null) 
             saveGame(saveFile);
     }
     
     private void saveGame(File file) {
+
         if(isGameOver.get())
             helperText.setText("Game is already over...Nothing to save");
         else{
-            ChineseCheckers curGame;
-            curGame = ChineseCheckersFactory.createSavedGameObject(gameEngine);
-            FileManager.saveGame(file.getAbsolutePath(), curGame);
-            helperText.setText("Game Saved!, You can now continue.");
+            Thread thread = new Thread(this::saveGameInPath);
+            thread.setDaemon(true);
+            thread.start();
         }
     }
 
+    private void saveGameInPath() {
+        try{
+            ChineseCheckers curGame;
+            curGame = ChineseCheckersFactory.createSavedGameObject(gameEngine);
+            FileManager.saveGame(saveFile.getAbsolutePath(), curGame);
+            Platform.runLater(()->helperText.setText("Game Saved!, You can now continue."));
+        }catch(Exception e){
+            Platform.runLater(()->helperText.setText("Could Not Save Game."));
+        }
+        finally{
+           saveAsBtn.disableProperty().set(false);
+           saveBtn.disableProperty().set(false);
+        }
+            
+    }
+
     private FileChooser createXML_FC() {
-        final FileChooser fc = new FileChooser();
+        fc = new FileChooser();
         fc.setTitle("Choose the destination and name for your saved game");
         addXMLExt(fc);
         return fc;
@@ -343,4 +349,22 @@ public class GameController implements Initializable ,ControlledScreen {
     private void onQuitClick(ActionEvent event){
         isGameOver.set(gameEngine.userQuited(gameEngine.getCurrentPlayer()));
     }
+    
+    @FXML
+    private void onSaveGameClick(ActionEvent event){
+        saveAsBtn.disableProperty().set(true);
+        saveBtn.disableProperty().set(true);
+        if (saveFile != null) 
+            saveGame(saveFile);
+        else
+            saveAs();
+    }
+    
+    @FXML
+    private void onSaveAsClick(ActionEvent event){
+        saveAsBtn.disableProperty().set(true);
+        saveBtn.disableProperty().set(true);
+        saveAs();
+    }
+
 }

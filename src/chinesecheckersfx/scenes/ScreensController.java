@@ -119,4 +119,9 @@ import javafx.stage.Stage;
         fxmlLoader.setLocation(url);
         return fxmlLoader;
     }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+    
  }
