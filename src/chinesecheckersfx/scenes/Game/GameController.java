@@ -51,6 +51,7 @@ public class GameController implements Initializable ,ControlledScreen {
     @FXML Text helperText;
     private Point start;
     private SimpleBooleanProperty isGameOver;
+    private File saveFile;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -169,17 +170,33 @@ public class GameController implements Initializable ,ControlledScreen {
     
     @FXML
     private void onSaveGameClick(ActionEvent event){
-        FileChooser fc = createXML_FC();
-            File file = fc.showSaveDialog(null);
-            if (file != null) 
-                saveGame(file);
+        if (saveFile != null) 
+            saveGame(saveFile);
+        else
+            saveAs();
+    }
+    
+    @FXML
+    private void onSaveAsClick(ActionEvent event){
+        saveAs();
     }
 
+    private void saveAs() {
+        FileChooser fc = createXML_FC();
+        saveFile = fc.showSaveDialog(null);
+        if (saveFile != null) 
+            saveGame(saveFile);
+    }
+    
     private void saveGame(File file) {
-        ChineseCheckers curGame;
-        curGame = ChineseCheckersFactory.createSavedGameObject(gameEngine);
-        FileManager.saveGame(file.getAbsolutePath(), curGame);
-        helperText.setText("Game Saved!, You can now continue.");
+        if(isGameOver.get())
+            helperText.setText("Game is already over...Nothing to save");
+        else{
+            ChineseCheckers curGame;
+            curGame = ChineseCheckersFactory.createSavedGameObject(gameEngine);
+            FileManager.saveGame(file.getAbsolutePath(), curGame);
+            helperText.setText("Game Saved!, You can now continue.");
+        }
     }
 
     private FileChooser createXML_FC() {
