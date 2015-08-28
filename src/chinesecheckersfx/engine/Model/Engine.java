@@ -352,6 +352,8 @@ public class Engine {
         for (Point pointToRemove : quitedPlayer.getPoints()) {
             gameBoard.setColorByPoint(pointToRemove, Color.EMPTY);
         }
+        if(players.size() == currentPlayerIndx + 1)
+            currentPlayerIndx = 0;
         players.remove(quitedPlayer);
         if (players.size() != 1) {
             setPossibleMovesForPlayer(getCurrentPlayer());

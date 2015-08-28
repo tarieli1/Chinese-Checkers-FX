@@ -6,6 +6,7 @@
 package chinesecheckersfx.scenes.Game;
 
 import static chinesecheckersfx.ChineseCheckersFX.GAME_SCREEN;
+import static chinesecheckersfx.ChineseCheckersFX.GAME_SETTINGS_SCREEN;
 import chinesecheckersfx.engine.Model.Board;
 import chinesecheckersfx.engine.Model.ChineseCheckersFactory;
 import chinesecheckersfx.engine.Model.Color;
@@ -35,6 +36,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 /**
@@ -52,8 +54,11 @@ public class GameController implements Initializable ,ControlledScreen {
     @FXML Button saveBtn;
     @FXML Button saveAsBtn;
     @FXML Button resetBtn;
+    @FXML Button newGameBtn;
+    @FXML Button loadGameBtn;
     @FXML Text helperText;
     private FileChooser fc;
+    private Stage currStage;
     private Point start;
     private SimpleBooleanProperty isGameOver;
     private File saveFile;
@@ -178,6 +183,10 @@ public class GameController implements Initializable ,ControlledScreen {
         saveFile = fc.showSaveDialog(null);
         if (saveFile != null) 
             saveGame(saveFile);
+        else{
+            saveAsBtn.disableProperty().set(false);
+            saveBtn.disableProperty().set(false);
+        }
     }
     
     private void saveGame(File file) {
@@ -321,6 +330,8 @@ public class GameController implements Initializable ,ControlledScreen {
     }
 
     private void initBoard(){
+     newGameBtn.setDisable(true);
+     loadGameBtn.setDisable(true);
      Board gameBoard = gameEngine.getGameBoard();
         
      for (int i = 0; i < Board.ROWS; i++) {
@@ -336,8 +347,10 @@ public class GameController implements Initializable ,ControlledScreen {
 
     private void doGameOver() {
         initBoard();
+        newGameBtn.setDisable(false);
+        loadGameBtn.setDisable(false);
         disableAllPoints();
-        helperText.setText(gameEngine.getCurrentPlayer().getName() + " Won!, It was a nice game!");
+        helperText.setText(gameEngine.getCurrentPlayer().getName() + " Won!, It was a nice game!, please select what you want to do");
     }
     
     @FXML
@@ -349,8 +362,31 @@ public class GameController implements Initializable ,ControlledScreen {
     
     @FXML
     private void onQuitClick(ActionEvent event){
-        isGameOver.set(gameEngine.userQuited(gameEngine.getCurrentPlayer()));
-        doTurn();
+        if(isGameOver.get())
+            closeGame();
+        else{
+            isGameOver.set(gameEngine.userQuited(gameEngine.getCurrentPlayer()));
+            if(!isGameOver.get())
+                doTurn();
+            else
+                doGameOver();
+            }
+    }
+    
+    @FXML
+    private void closeGame() {
+        currStage = (Stage) quitBtn.getScene().getWindow();
+        currStage.close();
+    }
+    
+    @FXML
+    private void onLoadGameClick(ActionEvent event){
+        
+    }
+    
+    @FXML
+    private void onNewGameClick(ActionEvent event){
+        screensController.setScreen(GAME_SETTINGS_SCREEN, 720, 1000);
     }
     
     @FXML
@@ -369,7 +405,5 @@ public class GameController implements Initializable ,ControlledScreen {
         saveBtn.disableProperty().set(true);
         saveAs();
     }
-
- 
 
 }

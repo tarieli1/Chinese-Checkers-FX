@@ -1,4 +1,3 @@
-1)Do something with White marbles.They can't be seen...
 4)Fix heigth and width on each scene(idk how it looks on yours but it's not good on my pc)
-6)Bind Quit button on Game to isGameOver Boolean
 6)Some QA Please <3
+7) need to fix new game and load game btn on game ctrl

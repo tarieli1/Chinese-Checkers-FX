@@ -24,10 +24,12 @@
           <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="165.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="660.0" mnemonicParsing="false" onAction="#onQuitClick" prefWidth="80.0" text="Quit" />
-      <Button id="saveBtn" fx:id="saveBtn" layoutX="105.0" layoutY="660.0" mnemonicParsing="false" onAction="#onSaveGameClick" prefWidth="80.0" text="Save" />
-      <Text fx:id="helperText" layoutX="209.0" layoutY="630.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="364.0" />
-      <Button id="saveBtn" fx:id="resetBtn" layoutX="287.0" layoutY="660.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onRestartClick" prefHeight="30.0" prefWidth="80.0" text="Restart" />
-      <Button id="saveBtn" fx:id="saveAsBtn" layoutX="196.0" layoutY="660.0" maxWidth="108.0" mnemonicParsing="false" onAction="#onSaveAsClick" prefHeight="30.0" prefWidth="80.0" text="Save As" />
+      <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="650.0" mnemonicParsing="false" onAction="#onQuitClick" prefWidth="80.0" text="Quit" />
+      <Button id="saveBtn" fx:id="saveBtn" layoutX="105.0" layoutY="650.0" mnemonicParsing="false" onAction="#onSaveGameClick" prefWidth="80.0" text="Save" />
+      <Text fx:id="helperText" layoutX="99.0" layoutY="617.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="474.0" />
+      <Button id="saveBtn" fx:id="resetBtn" layoutX="668.0" layoutY="650.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onRestartClick" prefHeight="30.0" prefWidth="102.0" text="Restart" />
+      <Button id="saveBtn" fx:id="saveAsBtn" layoutX="197.0" layoutY="650.0" maxWidth="108.0" mnemonicParsing="false" onAction="#onSaveAsClick" prefHeight="30.0" prefWidth="80.0" text="Save As" />
+      <Button id="saveBtn" fx:id="newGameBtn" disable="true" layoutX="668.0" layoutY="568.0" maxHeight="44.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onNewGameClick" prefHeight="30.0" prefWidth="102.0" text="New Game" />
+      <Button id="saveBtn" fx:id="loadGameBtn" disable="true" layoutX="668.0" layoutY="609.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onLoadGameClick" prefHeight="30.0" prefWidth="102.0" text="Load Game" />
    </children>
 </AnchorPane>

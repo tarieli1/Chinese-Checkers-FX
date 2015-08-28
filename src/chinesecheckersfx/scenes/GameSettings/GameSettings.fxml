@@ -35,6 +35,6 @@
       <TextField fx:id="user4" disable="true" layoutX="15.0" layoutY="257.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 4" />
       <TextField fx:id="user5" disable="true" layoutX="15.0" layoutY="312.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 5" />
       <TextField fx:id="user6" disable="true" layoutX="15.0" layoutY="368.0" prefHeight="39.0" prefWidth="456.0" styleClass="textField" text="Player 6" />
-      <Label fx:id="alertLabel" layoutX="17.0" layoutY="541.0" prefHeight="25.0" prefWidth="754.0" />
+      <Label fx:id="alertLabel" layoutX="17.0" layoutY="541.0" prefHeight="25.0" prefWidth="754.0" textFill="RED" />
    </children>
 </AnchorPane>
