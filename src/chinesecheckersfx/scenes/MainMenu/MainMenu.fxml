@@ -8,15 +8,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.MainMenu.MainMenuController">
+<AnchorPane id="AnchorPane" maxHeight="720.0" maxWidth="784.0" minHeight="720.0" minWidth="784.0" prefHeight="720.0" prefWidth="784.0" styleClass="mainFxmlClass" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.MainMenu.MainMenuController">
     <children>
-      <ImageView fitHeight="778.0" fitWidth="791.0" layoutX="-2.0" layoutY="2.0" opacity="0.18" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="720.0" fitWidth="784.0" opacity="0.18" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../resources/images/9180.jpg" />
          </image>
       </ImageView>
-        <Button fx:id="loadGameButton" layoutX="8.0" layoutY="616.0" onAction="#handleLoadGameAction" prefHeight="56.0" prefWidth="771.0" text="Load Game" />
-      <Button fx:id="newGameButton" layoutX="8.0" layoutY="525.0" onAction="#handleNewGameAction" prefHeight="62.0" prefWidth="771.0" text="New Game" />
+        <Button fx:id="loadGameButton" layoutX="11.0" layoutY="616.0" onAction="#handleLoadGameAction" prefHeight="56.0" prefWidth="761.0" text="Load Game" />
+      <Button fx:id="newGameButton" layoutX="11.0" layoutY="525.0" onAction="#handleNewGameAction" prefHeight="62.0" prefWidth="761.0" text="New Game" />
       <Text layoutX="9.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Chinese Checkers" textAlignment="CENTER" wrappingWidth="782.0" />
     </children>
 </AnchorPane>

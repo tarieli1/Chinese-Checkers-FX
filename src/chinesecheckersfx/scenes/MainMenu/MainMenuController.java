@@ -77,7 +77,6 @@ public class MainMenuController implements Initializable ,ControlledScreen {
 
     private void loadGame() {                
         boolean loaded = false;
-
         
         if(choosedFile != null)
             loaded = loadSavedGame(choosedFile);

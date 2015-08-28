@@ -17,9 +17,9 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);
 }
 
-#saveBtn, #quitBtn{
+#saveBtn, #quitBtn, #saveAsBtn, #resetBtn{
     -fx-min-width: 60px;
-    -fx-max-width: 60px;
+    -fx-max-width: 120px;
     -fx-border-color: black;
     -fx-text-fill: white;
     -fx-font-size:15px;
@@ -29,7 +29,7 @@
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 
-#saveBtn:hover, #quitBtn:hover {
+#saveBtn:hover, #quitBtn:hover, #saveAsBtn:hover, #resetBtn:hover {
     -fx-background-color: linear-gradient(#2A5058, #61a2b1);
 }
 

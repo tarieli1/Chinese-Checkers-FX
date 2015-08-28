@@ -127,11 +127,6 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
         return totalPlayers;
     }
     
-    @FXML
-    protected void handleColorNumberAction(ActionEvent event){
-        
-    }
-    
     /**
      * Initializes the controller class.
      */
@@ -168,7 +163,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
                 boolean isUniqe = isUniqueNames();
                 boolean isValid = isValidColorPick();
                 if(!isValid)
-                    alertLabel.setText("Hey, you cant pick more so many colors..");
+                    alertLabel.setText("Hey, you can't pick more so many colors..");
                 else if(!isUniqe)
                     alertLabel.setText("Names need to be unique..");
                 else if(isEmpty)
@@ -241,6 +236,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     }
     
     private void setColorNumberComboBox() {
+        
         colorNumber.setItems(FXCollections.observableArrayList(1, 2, 3));
     }    
 

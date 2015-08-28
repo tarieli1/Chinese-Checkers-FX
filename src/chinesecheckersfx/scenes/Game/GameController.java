@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,6 +51,7 @@ public class GameController implements Initializable ,ControlledScreen {
     @FXML Button quitBtn;
     @FXML Button saveBtn;
     @FXML Button saveAsBtn;
+    @FXML Button resetBtn;
     @FXML Text helperText;
     private FileChooser fc;
     private Point start;
@@ -65,7 +67,7 @@ public class GameController implements Initializable ,ControlledScreen {
                 doGameOver();
             }
         });
-    }    
+    }   
     
     @Override
     public void setScreenParent(ScreensController screenParent) {
@@ -348,6 +350,7 @@ public class GameController implements Initializable ,ControlledScreen {
     @FXML
     private void onQuitClick(ActionEvent event){
         isGameOver.set(gameEngine.userQuited(gameEngine.getCurrentPlayer()));
+        doTurn();
     }
     
     @FXML
@@ -366,5 +369,7 @@ public class GameController implements Initializable ,ControlledScreen {
         saveBtn.disableProperty().set(true);
         saveAs();
     }
+
+ 
 
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="700.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.Game.GameController">
+<AnchorPane id="AnchorPane" maxHeight="720.0" maxWidth="784.0" minHeight="720.0" minWidth="784.0" prefHeight="720.0" prefWidth="784.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.Game.GameController">
     <stylesheets>
         <URL value="@game.css" />
     </stylesheets>
@@ -24,10 +24,10 @@
           <RowConstraints maxHeight="212.0" minHeight="10.0" prefHeight="165.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="660.0" mnemonicParsing="false" onAction="#onQuitClick" text="Quit" />
-      <Button id="saveBtn" fx:id="saveBtn" layoutX="84.0" layoutY="660.0" mnemonicParsing="false" onAction="#onSaveGameClick" text="Save" />
-      <Text fx:id="helperText" layoutX="339.0" layoutY="680.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Button id="saveBtn" layoutX="155.0" layoutY="660.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onRestartClick" prefHeight="30.0" prefWidth="104.0" text="Restart" />
-      <Button id="saveBtn" fx:id="saveAsBtn" layoutX="234.0" layoutY="660.0" mnemonicParsing="false" onAction="#onSaveAsClick" text="Save As" />
+      <Button id="quitBtn" fx:id="quitBtn" layoutX="14.0" layoutY="660.0" mnemonicParsing="false" onAction="#onQuitClick" prefWidth="80.0" text="Quit" />
+      <Button id="saveBtn" fx:id="saveBtn" layoutX="105.0" layoutY="660.0" mnemonicParsing="false" onAction="#onSaveGameClick" prefWidth="80.0" text="Save" />
+      <Text fx:id="helperText" layoutX="209.0" layoutY="630.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="364.0" />
+      <Button id="saveBtn" fx:id="resetBtn" layoutX="287.0" layoutY="660.0" maxWidth="104.0" mnemonicParsing="false" onAction="#onRestartClick" prefHeight="30.0" prefWidth="80.0" text="Restart" />
+      <Button id="saveBtn" fx:id="saveAsBtn" layoutX="196.0" layoutY="660.0" maxWidth="108.0" mnemonicParsing="false" onAction="#onSaveAsClick" prefHeight="30.0" prefWidth="80.0" text="Save As" />
    </children>
 </AnchorPane>
