@@ -1,32 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package chinesecheckersfx.scenes.Game;
 
 import static chinesecheckersfx.ChineseCheckersFX.GAME_SCREEN;
 import static chinesecheckersfx.ChineseCheckersFX.GAME_SETTINGS_SCREEN;
+import chinesecheckersfx.LoadSaveManager;
 import chinesecheckersfx.engine.Model.Board;
-import chinesecheckersfx.engine.Model.ChineseCheckersFactory;
 import chinesecheckersfx.engine.Model.Color;
 import chinesecheckersfx.engine.Model.Engine;
-import chinesecheckersfx.engine.Model.FileManager;
 import chinesecheckersfx.engine.Model.Player;
 import chinesecheckersfx.scenes.ControlledScreen;
 import chinesecheckersfx.scenes.GameSettings.GameSettingsController;
 import chinesecheckersfx.scenes.MainMenu.MainMenuController;
 import chinesecheckersfx.scenes.ScreensController;
-import generated.ChineseCheckers;
 import java.awt.Point;
-import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
-import javafx.application.Platform;
-import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,20 +25,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-/**
- * FXML Controller class
- *
- * @author shahar2
- */
 public class GameController implements Initializable ,ControlledScreen {
-   
+    
     private ScreensController screensController;
     private Engine gameEngine;
-    Button[][] buttonBoard = new Button[Board.ROWS][Board.COLS];
+    Button[][] buttonBoard;
     @FXML GridPane boardPane;
     @FXML Button quitBtn;
     @FXML Button saveBtn;
@@ -57,15 +41,14 @@ public class GameController implements Initializable ,ControlledScreen {
     @FXML Button newGameBtn;
     @FXML Button loadGameBtn;
     @FXML Text helperText;
-    private FileChooser fc;
+    private LoadSaveManager LS_Mnger;
     private Stage currStage;
     private Point start;
     private SimpleBooleanProperty isGameOver;
-    private File saveFile;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        fc = createXML_FC();
+        LS_Mnger = new LoadSaveManager();
         isGameOver = new SimpleBooleanProperty(false);
         isGameOver.addListener((source, oldValue, newValue) -> {
             if (newValue) {
@@ -95,6 +78,7 @@ public class GameController implements Initializable ,ControlledScreen {
         settingsController.getFinishedSettings().addListener((source, oldValue, newValue) -> {
             if (newValue) {
                 gameEngine = new Engine(settingsController.getGameSettings());
+                //printBoard(gameEngine.getGameBoard());
                 startGame();
             }
         });
@@ -117,6 +101,7 @@ public class GameController implements Initializable ,ControlledScreen {
     }
     
     private void startGame() {
+        isGameOver.set(false);
         initGameComponents();
         doIteration();
         screensController.setScreen(GAME_SCREEN, 720, 1000);
@@ -124,6 +109,7 @@ public class GameController implements Initializable ,ControlledScreen {
     }
 
     private void initGameComponents() {
+        buttonBoard = new Button[Board.ROWS][Board.COLS];
         Board gameBoard = gameEngine.getGameBoard();
         
         for (int i = 0; i < Board.ROWS; i++) {
@@ -177,56 +163,6 @@ public class GameController implements Initializable ,ControlledScreen {
             }
         }
         return pointClicked;
-    }
-    
-    private void saveAs() {
-        saveFile = fc.showSaveDialog(null);
-        if (saveFile != null) 
-            saveGame(saveFile);
-        else{
-            saveAsBtn.disableProperty().set(false);
-            saveBtn.disableProperty().set(false);
-        }
-    }
-    
-    private void saveGame(File file) {
-
-        if(isGameOver.get())
-            helperText.setText("Game is already over...Nothing to save");
-        else{
-            Thread thread = new Thread(this::saveGameInPath);
-            thread.setDaemon(true);
-            thread.start();
-        }
-    }
-
-    private void saveGameInPath() {
-        try{
-            ChineseCheckers curGame;
-            curGame = ChineseCheckersFactory.createSavedGameObject(gameEngine);
-            FileManager.saveGame(saveFile.getAbsolutePath(), curGame);
-            Platform.runLater(()->helperText.setText("Game Saved!, You can now continue."));
-        }catch(Exception e){
-            Platform.runLater(()->helperText.setText("Could Not Save Game."));
-        }
-        finally{
-           saveAsBtn.disableProperty().set(false);
-           saveBtn.disableProperty().set(false);
-        }
-            
-    }
-
-    private FileChooser createXML_FC() {
-        fc = new FileChooser();
-        fc.setTitle("Choose the destination and name for your saved game");
-        addXMLExt(fc);
-        return fc;
-    }
-
-    private void addXMLExt(final FileChooser fc) {
-        FileChooser.ExtensionFilter xmlFilter = new FileChooser.ExtensionFilter("xml files (*.xml)", "*.xml");
-        fc.getExtensionFilters().clear();
-        fc.getExtensionFilters().add(xmlFilter);
     }
 
     private void doIteration() {
@@ -288,9 +224,9 @@ public class GameController implements Initializable ,ControlledScreen {
         ArrayList<Point> notEmptyKeys = new ArrayList<>();
         
         Set<Point> starts = possibleMoves.keySet();
-        for (Point start : starts) {
-            if (!possibleMoves.get(start).isEmpty()) 
-                notEmptyKeys.add(start);
+        for (Point possibleStart : starts) {
+            if (!possibleMoves.get(possibleStart).isEmpty()) 
+                notEmptyKeys.add(possibleStart);
         }
         
         return notEmptyKeys;
@@ -353,6 +289,70 @@ public class GameController implements Initializable ,ControlledScreen {
         helperText.setText(gameEngine.getCurrentPlayer().getName() + " Won!, It was a nice game!, please select what you want to do");
     }
     
+    private void loadGame() {
+        loadGameBtn.disableProperty().set(true);
+        failLoadListner();
+        successLoadListner();
+        LS_Mnger.startAsyncLoadGame();
+    }
+
+    private void successLoadListner() {
+        LS_Mnger.getLoadGameFinished().addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                gameEngine = LS_Mnger.getLoadedEngine();
+                startGame();
+            }
+        });
+    }
+
+    private void failLoadListner() {
+        LS_Mnger.getLoadGameFailed().addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                helperText.setText("Could Not Load Game.. Try other file");
+                loadGameBtn.disableProperty().set(false);
+            }
+        });
+    }
+        
+    private void closeGame() {
+        currStage = (Stage) quitBtn.getScene().getWindow();
+        currStage.close();
+    }
+    
+    private void saveGameRutine() {
+        disableSavePoints();
+        successSaveListner();
+        failSaveListner();
+    }
+
+    private void disableSavePoints() {
+        saveAsBtn.disableProperty().set(true);
+        saveBtn.disableProperty().set(true);
+    }
+
+    private void successSaveListner() {
+        LS_Mnger.getSaveGameFailed().addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                helperText.setText("Could Not Save Game.. Try other location");
+                enableSaveBtns();
+            }
+        });
+    }
+    
+    private void failSaveListner() {
+        LS_Mnger.getSaveGameFinished().addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                helperText.setText("Game Saved!, You can now continue.");
+                enableSaveBtns();
+             }
+        });
+    }
+
+    private void enableSaveBtns() {
+        saveAsBtn.disableProperty().set(false);
+        saveBtn.disableProperty().set(false);
+    }
+    
     @FXML
     private void onRestartClick(ActionEvent event){
         gameEngine.restart();
@@ -372,38 +372,46 @@ public class GameController implements Initializable ,ControlledScreen {
                 doGameOver();
             }
     }
-    
-    @FXML
-    private void closeGame() {
-        currStage = (Stage) quitBtn.getScene().getWindow();
-        currStage.close();
-    }
-    
+
     @FXML
     private void onLoadGameClick(ActionEvent event){
-        
+        loadGame();
     }
     
     @FXML
     private void onNewGameClick(ActionEvent event){
+        FXMLLoader settingsLoader = screensController.getFXMLLoader(GAME_SETTINGS_SCREEN);
+        GameSettingsController gsc = settingsLoader.getController();
+        gsc.getFinishedSettings().set(false);
         screensController.setScreen(GAME_SETTINGS_SCREEN, 720, 1000);
     }
     
     @FXML
     private void onSaveGameClick(ActionEvent event){
-        saveAsBtn.disableProperty().set(true);
-        saveBtn.disableProperty().set(true);
-        if (saveFile != null) 
-            saveGame(saveFile);
-        else
-            saveAs();
+        if(isGameOver.get())
+            helperText.setText("Game is already over...Nothing to save");
+        else{
+            LS_Mnger.startAsyncSaveGame(gameEngine);
+            saveGameRutine();
+        }
     }
     
     @FXML
     private void onSaveAsClick(ActionEvent event){
-        saveAsBtn.disableProperty().set(true);
-        saveBtn.disableProperty().set(true);
-        saveAs();
+        if(isGameOver.get())
+            helperText.setText("Game is already over...Nothing to save");
+        else{
+            LS_Mnger.startAsyncSaveAsGame(gameEngine);
+            saveGameRutine();
+        }
     }
 
+    private void printBoard(Board gameBoard) {
+        for (int i = 0; i < Board.ROWS; i++) {
+            for (int j = 0; j < Board.COLS; j++) {
+                System.out.print(gameBoard.getColorByPoint(new Point(i,j)).toString());
+            }
+            System.out.println("");
+        }
+    }
 }

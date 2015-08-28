@@ -30,9 +30,9 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     ScreensController screenController;
     Engine.Settings gameSettings = new Engine.Settings();
     private SimpleBooleanProperty finishedSettings;
-    @FXML private ArrayList<TextField> playerNames = new ArrayList<>();
-    @FXML private ArrayList<CheckBox> humans = new ArrayList<>();
-    @FXML private ArrayList<CheckBox> actives = new ArrayList<>();
+    @FXML private final ArrayList<TextField> playerNames;
+    @FXML private final ArrayList<CheckBox> humans;
+    @FXML private final ArrayList<CheckBox> actives;
     @FXML private TextField user1;
     @FXML private TextField user2;
     @FXML private TextField user3;
@@ -52,6 +52,12 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     @FXML private ComboBox colorNumber;
     @FXML private Label alertLabel;
     @FXML private Button startGame;
+
+    public GameSettingsController() {
+        this.playerNames = new ArrayList<>();
+        this.humans = new ArrayList<>();
+        this.actives = new ArrayList<>();
+    }
 
     @FXML
     protected void handleActiveAction(ActionEvent event){
@@ -80,6 +86,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     protected void handleStartAction(ActionEvent event){
        initNewGame();
        finishedSettings.set(true);
+       finishedSettings.set(false);
     }
 
     private void initNewGame() {
