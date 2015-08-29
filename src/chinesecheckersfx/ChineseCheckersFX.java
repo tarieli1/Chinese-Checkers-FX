@@ -35,7 +35,7 @@ public class ChineseCheckersFX extends Application {
        mainContainer.loadScreen(GAME_SETTINGS_SCREEN,GAME_SETTINGS_SCREEN_FXML); 
        mainContainer.loadScreen(GAME_SCREEN, GAME_SCREEN_FXML); 
 
-       mainContainer.setScreen(MAIN_SCREEN,500,500); 
+       mainContainer.setScreen(MAIN_SCREEN); 
        initMainScreen(mainContainer.getFXMLLoader(MAIN_SCREEN));
        
        Group root = new Group(); 

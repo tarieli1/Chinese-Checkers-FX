@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 import java.util.Set;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,14 +46,29 @@ public class GameController implements Initializable ,ControlledScreen {
     private Stage currStage;
     private Point start;
     private SimpleBooleanProperty isGameOver;
+    private SimpleBooleanProperty slept;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         LS_Mnger = new LoadSaveManager();
         isGameOver = new SimpleBooleanProperty(false);
+        slept = new SimpleBooleanProperty(false);
+        gameOverListner();
+        sleepListner();
+    }   
+
+    private void sleepListner() {
+        slept.addListener((source, oldValue, newValue) -> {
+            if (newValue) {
+                doAiIteration();
+            }
+        });
+    }   
+
+    private void gameOverListner() {
         isGameOver.addListener((source, oldValue, newValue) -> {
             if (newValue) {
-                doGameOver();
+                doGameOver(newValue);
             }
         });
     }   
@@ -104,7 +120,7 @@ public class GameController implements Initializable ,ControlledScreen {
         isGameOver.set(false);
         initGameComponents();
         doIteration();
-        screensController.setScreen(GAME_SCREEN, 720, 1000);
+        screensController.setScreen(GAME_SCREEN);
         
     }
 
@@ -167,6 +183,7 @@ public class GameController implements Initializable ,ControlledScreen {
     }
 
     private void doIteration() {
+        quitBtn.disableProperty().set(false);
         Player curPlayer = gameEngine.getCurrentPlayer();
         initTurnForCurrentPlayer();
         String helpMessage = createTurnStartMessage(curPlayer.getName(),curPlayer.getColors());
@@ -247,21 +264,28 @@ public class GameController implements Initializable ,ControlledScreen {
         if (curPlayer.getType() == Player.Type.PLAYER) 
             doIteration();
         else
-            doAiIteration();
+            AIRoutine();
 
         
     }
 
     private void doAiIteration() {
+        quitBtn.disableProperty().set(true);
+        slept.set(false);
+        Player curPlayer = gameEngine.getCurrentPlayer();
+        String helpMessage = createTurnStartMessage(curPlayer.getName(),curPlayer.getColors());
+        helperText.setText(helpMessage);
         Pair<Boolean, ArrayList<Point>> aiMove;
         aiMove = gameEngine.doAiIteration();
         Point aiStart,aiEnd;
         if(aiMove.getKey())
             isGameOver.set(true);
         else{
-            aiStart = aiMove.getValue().get(0);
-            aiEnd = aiMove.getValue().get(1);
-            doTurn();
+            if (!aiMove.getValue().isEmpty()) {
+                aiStart = aiMove.getValue().get(0);
+                aiEnd = aiMove.getValue().get(1);
+                doTurn();
+            }
         }
         //TODO Show the move to the player
     }
@@ -286,12 +310,19 @@ public class GameController implements Initializable ,ControlledScreen {
         loadGameBtn.setDisable(true);
     }
 
-    private void doGameOver() {
+    private void doGameOver(boolean gameOver) {
         initBoard();
         newGameBtn.setDisable(false);
         loadGameBtn.setDisable(false);
         disableAllPoints();
-        helperText.setText(gameEngine.getCurrentPlayer().getName() + " Won!, It was a nice game!, please select what you want to do");
+        String text;
+        if(gameOver)
+            text = gameEngine.getCurrentPlayer().getName() + 
+                    " Won!, It was a nice game!, please select what you want to do";
+        else
+            text = "Only AI players remain, Game is Over!";
+        
+        helperText.setText(text);
     }
     
     private void loadGame() {
@@ -369,13 +400,31 @@ public class GameController implements Initializable ,ControlledScreen {
     private void onQuitClick(ActionEvent event){
         if(isGameOver.get())
             closeGame();
-        else{
-            isGameOver.set(gameEngine.userQuited(gameEngine.getCurrentPlayer()));
-            if(!isGameOver.get())
-                doTurn();
-            else
-                doGameOver();
-            }
+        else
+            quitPlayer();
+    }
+
+    private void quitPlayer() {
+        boolean over = gameEngine.userQuited(gameEngine.getCurrentPlayer());
+        ArrayList<Player> players = gameEngine.getPlayers();
+        boolean onlyAI = isOnlyAIRemain(players);
+            
+        isGameOver.set(over || onlyAI);
+        if(!isGameOver.get())
+            doTurn();
+        else
+            doGameOver(over);
+    }
+
+    private boolean isOnlyAIRemain(ArrayList<Player> players) {
+        int humanCount = 0;
+        for (Player player : players)
+            if (player.getType() == Player.Type.PLAYER)
+                humanCount++;
+        boolean onlyAI = false;
+        if (humanCount == 0)
+            onlyAI = true;
+        return onlyAI;
     }
 
     @FXML
@@ -393,7 +442,7 @@ public class GameController implements Initializable ,ControlledScreen {
         initBoard();
         gsc.getFinishedSettings().set(false);
         gsc.initGameSettings();
-        screensController.setScreen(GAME_SETTINGS_SCREEN, 720, 1000);
+        screensController.setScreen(GAME_SETTINGS_SCREEN);
     }
     
     @FXML
@@ -424,4 +473,22 @@ public class GameController implements Initializable ,ControlledScreen {
             System.out.println("");
         }
     }
+
+    private void AIRoutine() {
+        Thread thread = new Thread(this::waitASec);
+        thread.setDaemon(true);
+        thread.start();
+    }
+    
+    private void waitASec(){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException ex) {
+        }
+        finally{
+            Platform.runLater(()->slept.set(true));
+        }
+    }
+    
+    
 }

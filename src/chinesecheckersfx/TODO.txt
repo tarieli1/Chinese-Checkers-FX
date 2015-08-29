@@ -1,9 +1,1 @@
-1)Fix heigth and width on each scene(idk how it looks on yours but it's not good on my pc)
-
-2)need to fix new game and load game btn on game ctrl (I think it's fine didn't test much)
-
-3)Fix colors won't reset on button board.
-to reproduce bug create new game move some,then quit and click 
-newGame -> start You should now see disabled buttons with color not in position
-
-4)Some more QA Please <3
+1)Some more QA Please <3

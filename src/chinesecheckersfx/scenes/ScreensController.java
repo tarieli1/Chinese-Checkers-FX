@@ -50,7 +50,7 @@ import javafx.stage.Stage;
      }*/ //TODO re Added the catch at end
    }
     
-    public boolean setScreen(final String name,double width,double heigth) { 
+    public boolean setScreen(final String name) { 
 
      if(screens.get(name) != null) { //screen loaded 
        final DoubleProperty opacity = opacityProperty(); 
@@ -72,7 +72,7 @@ import javafx.stage.Stage;
          fadeIn.play(); 
        } 
        primaryStage.setHeight(720);
-       primaryStage.setWidth(784);
+       primaryStage.setWidth(800);
        return true; 
      } 
     else //Load First 

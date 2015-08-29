@@ -270,7 +270,7 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
     private void setNewGameListner(MainMenuController menuController) {
         menuController.getIsNewGame().addListener((source, oldValue, newValue) -> {
             if (newValue) {
-                screenController.setScreen(GAME_SETTINGS_SCREEN,500,500);
+                screenController.setScreen(GAME_SETTINGS_SCREEN);
             }
         });
     }

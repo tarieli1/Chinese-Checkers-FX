@@ -251,16 +251,17 @@ public class Engine {
         
         Player Ai = getCurrentPlayer();
         ArrayList<Point> aiMove = new ArrayList<>();
-
+        Boolean res = false;
         HashMap<Point, ArrayList<Point>> possibleMoves = Ai.getPossibleMoves();
         Pair<Point, Point> bestMove = getBestAIMove(possibleMoves);
-
-        Point start = bestMove.getKey();
-        Point end = bestMove.getValue();
-        Boolean res = doIteration(start, end);
-        aiMove.add(start);
-        aiMove.add(end);
         
+        if(bestMove != null){
+            Point start = bestMove.getKey();
+            Point end = bestMove.getValue();
+            res = doIteration(start, end);
+            aiMove.add(start);
+            aiMove.add(end);
+        }
         return new Pair<>(res,aiMove);
     }
 
@@ -283,6 +284,9 @@ public class Engine {
         }       
         if (bestAIMove == null) {
             bestAIMove = finish(possibleMoves);
+        }
+        if (bestAIMove == null) {
+            bestAIMove = getMove(possibleMoves);
         }
         return bestAIMove;
     }
@@ -480,6 +484,17 @@ public class Engine {
         
         return isGameOver;
     }
+
+    private Pair<Point, Point> getMove(HashMap<Point, ArrayList<Point>> possibleMoves) {
+        Set<Point> starts = possibleMoves.keySet();
+        for (Point start : starts) {
+            ArrayList<Point> ends = possibleMoves.get(start);
+            if (!ends.isEmpty()) 
+                return new Pair<>(start,ends.get(0));
+        }
+        return null;
+    }
+    
     
     public static class Settings {
 
