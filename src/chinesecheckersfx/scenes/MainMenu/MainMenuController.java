@@ -25,12 +25,9 @@ public class MainMenuController implements Initializable, ControlledScreen {
     private SimpleBooleanProperty isLoadGameFinished;
     private Engine loadedGame;
     private LoadSaveManager LS_Mnger;
-    @FXML
-    Button loadGameButton;
-    @FXML
-    Button newGameButton;
-    @FXML
-    Text helperTxt;
+    @FXML Button loadGameButton;
+    @FXML Button newGameButton;
+    @FXML Text helperTxt;
 
     @FXML
     private void handleLoadGameAction(ActionEvent event) {
@@ -57,7 +54,7 @@ public class MainMenuController implements Initializable, ControlledScreen {
     private void failLoadListner() {
         LS_Mnger.getLoadGameFailed().addListener((source, oldValue, newValue) -> {
             if (newValue) {
-                helperTxt.setText("Could not load game, try other game.");
+                helperTxt.setText("Saved game is corrupted, try other saved game.");
                 enableButtons();
             }
         });
