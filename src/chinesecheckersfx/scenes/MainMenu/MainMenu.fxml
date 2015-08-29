@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="720.0" maxWidth="784.0" minHeight="720.0" minWidth="784.0" prefHeight="720.0" prefWidth="784.0" styleClass="mainFxmlClass" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.MainMenu.MainMenuController">
+<AnchorPane id="AnchorPane" maxHeight="720.0" maxWidth="830.0" minHeight="720.0" minWidth="830.0" prefHeight="720.0" prefWidth="830.0" styleClass="mainFxmlClass" stylesheets="@mainmenu.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.MainMenu.MainMenuController">
     <children>
       <ImageView fitHeight="720.0" fitWidth="784.0" opacity="0.18" pickOnBounds="true" preserveRatio="true">
          <image>

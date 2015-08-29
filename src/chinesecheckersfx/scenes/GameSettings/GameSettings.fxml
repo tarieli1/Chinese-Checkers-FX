@@ -9,7 +9,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" maxHeight="720.0" maxWidth="784.0" minHeight="720.0" minWidth="784.0" prefHeight="720.0" prefWidth="784.0" styleClass="mainFxmlClass" stylesheets="@gamesettings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.GameSettings.GameSettingsController">
+<AnchorPane id="AnchorPane" maxHeight="720.0" maxWidth="830.0" minHeight="720.0" minWidth="830.0" prefHeight="720.0" prefWidth="830.0" styleClass="mainFxmlClass" stylesheets="@gamesettings.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chinesecheckersfx.scenes.GameSettings.GameSettingsController">
    <children>
       <Text layoutX="12.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="header" text="Game Settings" wrappingWidth="777.0" />
       <Button fx:id="startGame" layoutX="12.0" layoutY="596.0" mnemonicParsing="false" onAction="#handleStartAction" prefHeight="60.0" prefWidth="761.0" styleClass="startGameBtn" text="Start Game" />
