@@ -316,6 +316,7 @@ public class GameSettingsController implements Initializable, ControlledScreen {
 
     public void initGameSettings() {
         int i = 1;
+        clicked.set(false);
         for (TextField playerName : playerNames) {
             playerName.setText("Player " + i);
             if (i > 2) {
