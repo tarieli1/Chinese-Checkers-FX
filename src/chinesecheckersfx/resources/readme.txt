@@ -1,28 +1,17 @@
 Tamir Arieli - 201548039
 Shahar Levy - 203546379
 
-The Main class is 'Main'
-The assumptions we made:
-    1. The points you enter while you play the game are like in the xml
-       (the top point is (1,1))
-    2. In the Load Game option users will need to insert full path to their saved game.
+The Main class is 'src.chinesecheckersfx.ChineseCheckersFX.java'
 
-*Computer has good AI will always try to move to best point(regarding his target)
+*Pressing the 'Quit' button will remove current human player,
+ When pressing the 'Quit' button while game is over, game will exit.
 
+*If there is 1 human player in-game, if exits game will be over.
 
-**It doesn't always happens but,
-  We have noticed that when we transfer the source code between computers,
-  We need to edit the file project.properties path:
-  NetBeansProjects\Chinese-Checkers\nbproject\project.properties
+*Computer has good AI will always try to move to best point.
 
-  We need to change endorsed.classpath to this:
-endorsed.classpath=\
-    ${lib.JAX-WS 2.2.classpath}
+* used a little sleep to help users understand what's going on.
 
-  and then Regenerate JAXB Bindings.
-
-We tried to fix this issue so it should work.
 Please tell us if you encountered a problem.
 shahar201091@gmail.com
 tarieli@gmail.com
-

@@ -9,10 +9,10 @@ package chinesecheckersfx.scenes;
  *
  * @author shahar2
  */
- public interface ControlledScreen { 
+public interface ControlledScreen {
 
-     //This method will allow the injection of the Parent ScreenPane
-     public void setScreenParent(ScreensController screenParent); 
-     
-     public void initListners();
-  } 
+    //This method will allow the injection of the Parent ScreenPane
+    public void setScreenParent(ScreensController screenParent);
+
+    public void initListners();
+}
