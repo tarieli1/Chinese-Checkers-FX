@@ -17,10 +17,6 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0.0, 0, 1);
 }
 
-#EMPTY{
-    -fx-color: #B8B8B8;
-}
-
 #saveBtn, #quitBtn, #saveAsBtn, #resetBtn{
     -fx-min-width: 60px;
     -fx-max-width: 120px;

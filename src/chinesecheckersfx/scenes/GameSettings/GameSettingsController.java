@@ -274,4 +274,26 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
             }
         });
     }
+
+    public void initGameSettings() {
+        int i = 1;
+        for (TextField playerName : playerNames) {
+            playerName.setText("Player " + i);
+            if(i > 2)
+                playerName.setDisable(true);
+            i++;
+        }
+        i = 0;
+        for (CheckBox human : humans) {
+            if(i == 1)
+                human.setSelected(true);
+            if(i != 1)
+                human.setSelected(false);
+            if(i != 2)
+                human.setDisable(true);
+        }
+        for (CheckBox active : actives) {
+            active.setSelected(false);
+        }
+    }
 }

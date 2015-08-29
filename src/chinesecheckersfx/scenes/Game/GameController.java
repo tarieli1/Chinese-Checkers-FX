@@ -111,6 +111,7 @@ public class GameController implements Initializable ,ControlledScreen {
     private void initGameComponents() {
         buttonBoard = new Button[Board.ROWS][Board.COLS];
         Board gameBoard = gameEngine.getGameBoard();
+        disableNewGameAndLoadBtn();
         
         for (int i = 0; i < Board.ROWS; i++) {
             for (int j = 0; j < Board.COLS; j++) {
@@ -138,7 +139,7 @@ public class GameController implements Initializable ,ControlledScreen {
         if(buttonColor != Color.EMPTY)
             buttonBoard[curPoint.x][curPoint.y].setStyle("-fx-base:" + buttonColor);
         else
-            buttonBoard[curPoint.x][curPoint.y].setStyle(null);
+            buttonBoard[curPoint.x][curPoint.y].setStyle("-fx-base: #B8B8B8");
         buttonBoard[curPoint.x][curPoint.y].setId(buttonColor.toString());
     }
 
@@ -266,8 +267,7 @@ public class GameController implements Initializable ,ControlledScreen {
     }
 
     private void initBoard(){
-     newGameBtn.setDisable(true);
-     loadGameBtn.setDisable(true);
+     disableNewGameAndLoadBtn();
      Board gameBoard = gameEngine.getGameBoard();
         
      for (int i = 0; i < Board.ROWS; i++) {
@@ -279,6 +279,11 @@ public class GameController implements Initializable ,ControlledScreen {
             }
         }
       }
+    }
+
+    private void disableNewGameAndLoadBtn() {
+        newGameBtn.setDisable(true);
+        loadGameBtn.setDisable(true);
     }
 
     private void doGameOver() {
@@ -383,6 +388,7 @@ public class GameController implements Initializable ,ControlledScreen {
         FXMLLoader settingsLoader = screensController.getFXMLLoader(GAME_SETTINGS_SCREEN);
         GameSettingsController gsc = settingsLoader.getController();
         gsc.getFinishedSettings().set(false);
+        gsc.initGameSettings();
         screensController.setScreen(GAME_SETTINGS_SCREEN, 720, 1000);
     }
     
