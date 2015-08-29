@@ -361,6 +361,15 @@ public class Engine {
 
         return players.size() == 1;
     }
+    
+    public void clearUsersFromBoard(){
+        for (int i = 0; i < 6; i++) {
+            if(players.size() >= (i + 1) ){
+                for (Point pointToRemove : players.get(i).getPoints())
+                    gameBoard.setColorByPoint(pointToRemove, Color.EMPTY);
+            }
+        }
+    }
 
     private ArrayList<Color> toList(Stack<Pair<Color, Color>> colorStack) {
         ArrayList<Color> colorsInStack = new ArrayList<>();

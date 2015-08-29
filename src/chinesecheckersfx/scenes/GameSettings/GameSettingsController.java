@@ -283,17 +283,17 @@ public class GameSettingsController implements Initializable ,ControlledScreen {
                 playerName.setDisable(true);
             i++;
         }
-        i = 0;
+        i = 2;
         for (CheckBox human : humans) {
-            if(i == 1)
-                human.setSelected(true);
-            if(i != 1)
-                human.setSelected(false);
+            human.setSelected(false);
+            human.setDisable(false);
             if(i != 2)
                 human.setDisable(true);
+            i++;
         }
         for (CheckBox active : actives) {
             active.setSelected(false);
         }
+        colorNumber.getSelectionModel().select(0);
     }
 }

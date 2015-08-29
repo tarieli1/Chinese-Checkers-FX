@@ -380,6 +380,8 @@ public class GameController implements Initializable ,ControlledScreen {
 
     @FXML
     private void onLoadGameClick(ActionEvent event){
+        gameEngine.clearUsersFromBoard();
+        initBoard();
         loadGame();
     }
     
@@ -387,6 +389,8 @@ public class GameController implements Initializable ,ControlledScreen {
     private void onNewGameClick(ActionEvent event){
         FXMLLoader settingsLoader = screensController.getFXMLLoader(GAME_SETTINGS_SCREEN);
         GameSettingsController gsc = settingsLoader.getController();
+        gameEngine.clearUsersFromBoard();
+        initBoard();
         gsc.getFinishedSettings().set(false);
         gsc.initGameSettings();
         screensController.setScreen(GAME_SETTINGS_SCREEN, 720, 1000);
