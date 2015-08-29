@@ -184,10 +184,8 @@ public class GameController implements Initializable ,ControlledScreen {
 
     private void doIteration() {
         quitBtn.disableProperty().set(false);
-        Player curPlayer = gameEngine.getCurrentPlayer();
         initTurnForCurrentPlayer();
-        String helpMessage = createTurnStartMessage(curPlayer.getName(),curPlayer.getColors());
-        helperText.setText(helpMessage);
+        showCurPlayerText();
     }
 
     private void enablePoints(ArrayList<Point> points) {       
@@ -272,9 +270,6 @@ public class GameController implements Initializable ,ControlledScreen {
     private void doAiIteration() {
         quitBtn.disableProperty().set(true);
         slept.set(false);
-        Player curPlayer = gameEngine.getCurrentPlayer();
-        String helpMessage = createTurnStartMessage(curPlayer.getName(),curPlayer.getColors());
-        helperText.setText(helpMessage);
         Pair<Boolean, ArrayList<Point>> aiMove;
         aiMove = gameEngine.doAiIteration();
         Point aiStart,aiEnd;
@@ -475,9 +470,16 @@ public class GameController implements Initializable ,ControlledScreen {
     }
 
     private void AIRoutine() {
+        showCurPlayerText();
         Thread thread = new Thread(this::waitASec);
         thread.setDaemon(true);
         thread.start();
+    }
+
+    private void showCurPlayerText() {
+        Player curPlayer = gameEngine.getCurrentPlayer();
+        String helpMessage = createTurnStartMessage(curPlayer.getName(),curPlayer.getColors());
+        helperText.setText(helpMessage);
     }
     
     private void waitASec(){
@@ -489,6 +491,4 @@ public class GameController implements Initializable ,ControlledScreen {
             Platform.runLater(()->slept.set(true));
         }
     }
-    
-    
 }
