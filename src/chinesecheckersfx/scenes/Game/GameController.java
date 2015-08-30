@@ -115,7 +115,6 @@ public class GameController implements Initializable, ControlledScreen {
         settingsController.getFinishedSettings().addListener((source, oldValue, newValue) -> {
             if (newValue) {
                 gameEngine = new Engine(settingsController.getGameSettings());
-                //printBoard(gameEngine.getGameBoard());
                 startGame();
             }
         });
@@ -354,7 +353,10 @@ public class GameController implements Initializable, ControlledScreen {
     private void successLoadListner() {
         LS_Mnger.getLoadGameFinished().addListener((source, oldValue, newValue) -> {
             if (newValue) {
+                boardPane.getChildren().clear();
+                //gameEngine.clearUsersFromBoard();
                 gameEngine = LS_Mnger.getLoadedEngine();
+                //initBoard();
                 startGame();
             }
         });
@@ -453,8 +455,6 @@ public class GameController implements Initializable, ControlledScreen {
 
     @FXML
     private void onLoadGameClick(ActionEvent event) {
-        gameEngine.clearUsersFromBoard();
-        initBoard();
         loadGame();
     }
 
@@ -506,7 +506,7 @@ public class GameController implements Initializable, ControlledScreen {
     }
 
     private void graphicMove(Point start, Point end) {
-
+        quitBtn.disableProperty().set(true);
         Button startBtn = buttonBoard[start.x][start.y];
         Button endBtn = buttonBoard[end.x][end.y];
 

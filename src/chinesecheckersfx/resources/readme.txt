@@ -3,14 +3,20 @@ Shahar Levy - 203546379
 
 The Main class is 'src.chinesecheckersfx.ChineseCheckersFX.java'
 
-*Pressing the 'Quit' button will remove current human player,
- When pressing the 'Quit' button while game is over, game will exit.
+Some assumption we made:
 
-*If there is 1 human player in-game, if exits game will be over.
+1) First click on 'Save' or 'SaveAs' will prompt a FileChooser, Later only 'SaveAs' 
+   click will be promting a File Chooser(Even on a new game).
 
-*Computer has good AI will always try to move to best point.
+2) Pressing the 'Quit' button will remove current human player,
+   When pressing the 'Quit' button while game is over, game will exit.
 
-* used a little sleep to help users understand what's going on.
+3) Game will be over if all Human Player Quited.
+
+Some notes:
+
+1) Computer has good AI will always try to move to best point.
+
 
 Please tell us if you encountered a problem.
 shahar201091@gmail.com
